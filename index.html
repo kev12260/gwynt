@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gwynt – Prototype</title>
+<style>
+:root{--bg:#10151a;--pan:#18212a;--line:#364552;--ag:#d4dbe0;--mut:#8896a2;--red:#b04444;--or:#d4a24e;--ice:#6fa8c4;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ag);font-family:Palatino,"Palatino Linotype",Georgia,serif}
+main{max-width:860px;margin:0 auto;padding:10px}
+h1{font-size:1.3rem;margin:4px 0 8px;letter-spacing:.04em;font-weight:600}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;background:var(--pan);border:1px solid var(--line);border-radius:3px;font-size:.9rem}
+.gem{color:var(--red);letter-spacing:2px}.gem.off{color:#3a2a2a}
+.tot{font-size:1.4rem;color:var(--or);font-weight:700}
+.row{display:flex;align-items:center;gap:8px;min-height:50px;margin-top:4px;padding:4px 8px;border:1px solid var(--line);background:#141b22;position:relative;border-radius:3px}
+.row.fx{background:linear-gradient(90deg,#1d3040,#141b22)}.row.fx::after{content:attr(data-fx);position:absolute;right:8px;top:2px;font-size:.7rem;color:var(--ice)}
+.rs{width:38px;text-align:center;font-weight:700;font-size:1.1rem}.rn{width:54px;font-size:.72rem;color:var(--mut)}
+.cs{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.chip{display:flex;align-items:center;gap:4px;padding:2px 6px 2px 2px;border:1px solid var(--line);background:var(--pan);border-radius:3px;font-size:.72rem}
+.chip b{background:#2b3844;border-radius:50%;min-width:20px;height:20px;display:grid;place-items:center;font-size:.72rem}
+.chip.h{border-color:var(--or)}.chip.h b{background:var(--or);color:#111}.chip b.dn{color:var(--red)}
+.hand{display:flex;gap:6px;overflow-x:auto;padding:10px 2px 6px;margin-top:6px}
+.card{flex:0 0 84px;height:112px;border:1px solid var(--line);background:var(--pan);border-radius:4px;padding:6px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;font:inherit;color:inherit;text-align:left}
+.card:hover:not(:disabled){border-color:var(--ag);transform:translateY(-4px)}.card:disabled{opacity:.55;cursor:default}
+.card.h{border-color:var(--or)}.card.w{border-color:var(--ice);background:#16283a}
+.card b{font-size:1.4rem;color:var(--or)}.card.w b{color:var(--ice);font-size:1rem}.card span{font-size:.72rem;line-height:1.15}.card i{font-style:normal;font-size:.65rem;color:var(--mut)}
+.act{display:flex;gap:8px;margin-top:8px;align-items:center}
+button.btn{background:var(--red);color:#fff;border:0;padding:8px 16px;border-radius:3px;font:inherit;cursor:pointer}
+button.btn.s{background:#2b3844}button.btn:disabled{opacity:.5}
+#msg{flex:1;color:var(--or);font-size:.9rem;min-height:1.2em}
+.row.pick{outline:2px solid var(--or);cursor:pointer}.card.on{border-color:var(--or)}.card.fac{flex:none;width:100%;height:auto;margin:6px 0;gap:4px}.card.lc{border-color:#b07cd8;background:#241a30}.card.lc b{color:#b07cd8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}.card.tl{pointer-events:none;flex:none}
+.card.rr0{border-color:#4a5967}.card.rr1{border-color:#4f8cc9}.card.rr2{border-color:#a66fd1}.card.rr3{border-color:var(--or)}
+.dr{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:4px 8px;margin:3px 0;border:1px solid var(--line);background:#141b22;font-size:.8rem;border-radius:3px}.dr .btn{padding:2px 10px}
+.fm label{display:block;margin:6px 0;font-size:.85rem;color:var(--mut)}.fm input,.fm select{display:block;width:100%;margin-top:2px;background:#141b22;color:var(--ag);border:1px solid var(--line);padding:6px;border-radius:3px;font:inherit}.dr.rr1{border-color:#4f8cc9}.dr.rr2{border-color:#a66fd1}.dr.rr3{border-color:var(--or)}
+.hint{color:var(--mut);font-size:.75rem;margin-top:10px;line-height:1.4}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .12s}}
+</style></head><body><main>
+<h1>Gwynt — prototype</h1>
+<div id="app"></div>
+<p class="hint">Règles retenues : 10 cartes en main, 2 manches à gagner, égalité = chacun perd une gemme, les héros (bordure dorée) ignorent la météo. Gelée : mêlée à 1, brouillard : distance à 1, pluie : siège à 1, temps clair annule tout. Capacités : espion (la carte passe chez l’adversaire et tu pioches 2 cartes), lien (les cartes identiques d’une même rangée se multiplient), cor (double une rangée, clique ensuite sur la rangée). 5 factions avec une capacité passive et un chef (voir le menu de départ). Le chef s’utilise une fois par partie avec la carte violette ★ au début de ta main (tu choisis ton chef après ta faction) ; elle compte comme ton tour. Les boosters et la collection sont sauvegardés dans ce navigateur.</p>
+</main>
+<script>
+const RN=['Mêlée','Distance','Siège'],WN=['Gelée mordante','Brouillard épais','Pluie torrentielle'];
+const U=(n,p,r,h,a)=>({n,p,r,h:!!h,a}),W=(n,w)=>({n,w}),HN={n:'Cor de commandement',hn:1};
+const POOL=[U('Geralt de Riv',15,0,1),U('Vernon Roche',10,0,1),U('Triss Merigold',7,0,1),U('Philippa Eilhart',10,1,1),U('Esterad Thyssen',10,0,1),
+U('Ves',5,0),U('Yarpen Zigrin',2,0),U('Rubans bleus',4,0,0,'bond'),U('Rubans bleus',4,0,0,'bond'),U('Fantassin',1,0,0,'bond'),U('Fantassin',1,0,0,'bond'),U('Fantassin',1,0,0,'bond'),U('Dijkstra',4,0,0,'spy'),U('Prince Stennis',5,0,0,'spy'),HN,
+U('Keira Metz',5,1),U('Sheldon Skaggs',4,1),U('Sabrina Glevissig',4,1),U('Arbalétrier',6,1),U('Arbalétrier',6,1),U('Archer de Dun Banner',3,1),
+U('Catapulte',8,2,0,'bond'),U('Catapulte',8,2,0,'bond'),U('Baliste',6,2),U('Tour de siège',6,2),U('Trébuchet',6,2),U('Thaler',1,2,0,'spy'),
+W(WN[0],0),W(WN[1],1),W(WN[2],2),W('Temps clair',-1)];
+const EF={clear:'annule la météo',disc:'l’adversaire défausse 2 cartes au hasard',hornM:'double la rangée de mêlée',hornR:'double la rangée de distance',hornS:'double la rangée de siège',grave:'2 unités du cimetière reviennent sur le plateau',draw:'pioche 2 cartes'},LD=(n,k)=>({n,k,e:EF[k]});
+const L=(n,p,r,a,k=1)=>Array.from({length:k},()=>U(n,p,r,0,a)),Hh=(n,p,r)=>U(n,p,r,1);
+const NEU=POOL.filter(c=>c.w!==undefined||c.hn||c.n==='Geralt de Riv'||c.n==='Triss Merigold');
+const FA={
+nr:{n:'Royaumes du Nord',d:'Pioche 1 carte après chaque manche gagnée.',ls:[LD('Foltest','clear'),LD('Foltest le Conquérant','hornS')],c:POOL},
+ni:{n:'Nilfgaard',d:'Gagne les égalités de manche.',ls:[LD('Emhyr var Emreis','disc'),LD('Jan Calveit','draw')],c:[...NEU,Hh('Menno Coehoorn',10,0),Hh('Tibor Eggebracht',10,1),...L('Vattier de Rideaux',4,0,'spy'),...L('Stefan Skellen',9,0,'spy'),...L('Brigade Impera',3,0,'bond',4),...L('Cahir',6,0),...L('Arbalétrier de Vreemde',5,1,0,2),...L('Vanhemar',4,1),...L('Cynthia',4,1),...L('Scorpion zerrikanien',8,2),...L('Baliste nilfgaardienne',6,2,0,2)]},
+mo:{n:'Monstres',d:'Garde une unité au hasard sur le plateau après chaque manche.',ls:[LD('Eredin','hornM'),LD('Dagon','clear')],c:[...NEU,Hh('Draug',10,0),Hh('Kayran',8,1),Hh('Imlerith',10,0),...L('Goule',1,0,'bond',3),...L('Noyeur',2,0,'bond',2),...L('Nécrophage',5,0),...L('Griffon',5,0),...L('Harpie',2,1,0,2),...L('Gargouille',2,1),...L('Wyvern',2,1),...L('Troll des glaces',5,2),...L('Troll des cavernes',6,2),...L('Fiélon',6,0)]},
+sc:{n:'Scoia’tael',d:'Commence toujours la première manche.',ls:[LD('Francesca Findabair','hornR'),LD('Filavandrel','draw')],c:[...NEU,Hh('Eithné',10,1),Hh('Iorveth',10,1),Hh('Isengrim',10,0),...L('Dennis Cranmer',6,0),...L('Barclay Els',6,0),...L('Commando Vrihedd',5,0,0,2),...L('Ciaran',3,0),...L('Archer de Dol Blathanna',4,1,0,2),...L('Défenseur de Mahakam',5,0,0,3),...L('Toruviel',2,1),...L('Riordain',1,1),...L('Machine de siège naine',5,2,0,2)]},
+sk:{n:'Skellige',d:'Au début de la manche 3, 2 unités du cimetière reviennent.',ls:[LD('Crach an Craite','grave'),LD('Eist Tuirseach','hornM')],c:[...NEU,Hh('Cerys',10,0),Hh('Hjalmar',10,1),...L('Berserker',4,0),...L('Clan Tordarroch',4,0),...L('Archer Brokvar',6,1,0,2),...L('Pirate de Dimun',6,1,0,2),...L('Guerrier an Craite',6,0,'bond',3),...L('Guerrière Drummond',4,0,'bond',3),...L('Birna Bran',2,0),...L('Holger Blackhand',4,2),...L('Catapulte de guerre',6,2,0,2)]}};
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let S;
+function menuOld(){document.getElementById('app').innerHTML='<p>Choisis ta faction :</p>'+Object.keys(FA).map(k=>`<button class="card fac" data-k="${k}"><span><b>${FA[k].n}</b></span><i>${FA[k].d}</i></button>`).join('')+'<button class="btn s" id="mb">Retour</button>';
+ document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>pick(b.dataset.k));$('mb').onclick=home}
+function begin(){if(S.f[1]==='sc'&&S.f[0]!=='sc'){S.t=1;S.msg='L’adversaire (Scoia’tael) commence.';render();setTimeout(ai,900)}else render()}
+function rst(w){[0,1].forEach(p=>{const all=S.b[p].flat();S.gy[p].push(...all);S.b[p]=[[],[],[]];
+ if(S.f[p]==='mo'&&all.length){const k=all[Math.random()*all.length|0];S.gy[p].splice(S.gy[p].indexOf(k),1);S.b[p][k.r].push(k)}
+ if(S.f[p]==='nr'&&w===p)S.h[p].push(...S.d[p].splice(0,1))})}
+function sk(){[0,1].forEach(p=>{if(S.f[p]==='sk'&&S.r===3)for(let i=0;i<2&&S.gy[p].length;i++){const k=S.gy[p].splice(Math.random()*S.gy[p].length|0,1)[0];S.b[p][k.r].push(k)}})}
+function init(f0,li,o){const f1=o.f,d0=shuf([...myDeck(f0),...(o.cust?(o.test?[o.test,o.test,o.test]:SV.cc.filter(c=>c.f===f0||c.f==='neu')):[])]),d1=shuf(o.deck());
+ S={o,li,f:[f0,f1],gy:[[],[]],ld:[1,o.li<0?0:1],L:[FA[f0].ls[li],o.li<0?{n:'aucun',k:'none',e:''}:FA[f1].ls[o.li]],h:[d0.slice(0,10),d1.slice(0,10)],d:[d0.slice(10),d1.slice(10)],b:[[[],[],[]],[[],[],[]]],hn:[[0,0,0],[0,0,0]],wx:[0,0,0],g:[2,2],ps:[0,0],t:0,r:1,over:0,lock:0,mul:2,sel:null,msg:'Remplace jusqu’à 2 cartes (clique dessus), puis garde ta main.'};render()}
+function swap(i){const c=S.h[0].splice(i,1,S.d[0].shift())[0];S.d[0].push(c);S.mul--;S.msg=S.mul?'Encore 1 remplacement possible.':'Remplacements terminés. À toi de jouer.';S.mul?render():begin()}
+const rv=(p,r,wx=S.wx)=>{const L=S.b[p][r];return L.map(c=>{let v=wx[r]&&!c.h?1:c.p;if(c.a==='bond')v*=L.filter(x=>x.n===c.n).length;if(S.hn[p][r]&&!c.h)v*=2;return v})};
+const rs=(p,r,wx=S.wx)=>rv(p,r,wx).reduce((s,v)=>s+v,0);
+const tot=(p,wx=S.wx)=>[0,1,2].reduce((s,r)=>s+rs(p,r,wx),0);
+function nwx(c){return c.w===-1?[0,0,0]:S.wx.map((v,i)=>i===c.w?1:v)}
+function play(p,i,row){const c=S.h[p].splice(i,1)[0];S.sel=null;
+ if(c.w!==undefined)S.wx=nwx(c);
+ else if(c.hn)S.hn[p][row]=1;
+ else{S.b[c.a==='spy'?1-p:p][c.r].push(c);if(c.a==='spy')S.h[p].push(...S.d[p].splice(0,2))}
+ S.msg=(p?'L’adversaire joue : ':'Tu joues : ')+c.n+(c.hn?' ('+RN[row]+')':'')+(c.a==='spy'?' (espion, +2 cartes)':'')+'.';turn(p)}
+function pass(p){S.ps[p]=1;S.msg=p?'L’adversaire passe.':'Tu passes.';turn(p)}
+function turn(p){
+ if(S.ps[0]&&S.ps[1])return endRound();
+ S.t=S.ps[1-p]?p:1-p;
+ if(!S.ps[S.t]&&!S.h[S.t].length){S.ps[S.t]=1;return turn(S.t)}
+ render();if(S.t===1)setTimeout(ai,900)}
+function endRound(){const a=tot(0),b=tot(1);let m;const ni0=S.f[0]==='ni'&&S.f[1]!=='ni',ni1=S.f[1]==='ni'&&S.f[0]!=='ni',w=a>b?0:b>a?1:ni0?0:ni1?1:-1;
+ if(w===0){S.g[1]--;m='Manche '+S.r+' gagnée ('+a+' à '+b+').'}
+ else if(w===1){S.g[0]--;m='Manche '+S.r+' perdue ('+a+' à '+b+').'}
+ else{S.g[0]--;S.g[1]--;m='Manche '+S.r+' : égalité ('+a+' partout), chacun perd une gemme.'}
+ const st=w<0?S.t:w;
+ if(S.g[0]<=0||S.g[1]<=0){S.over=1;const win=S.g[1]<=0&&S.g[0]>0;if(S.o.tr){trEnd(win,m);return render()}
+ if(S.o.cust){S.msg=m+(win?' Victoire ! (partie personnalisée : aucune récompense)':' Fin de la partie personnalisée.');return render()}if(win){const first=!SV.beat[S.o.id];SV.beat[S.o.id]=1;SV.bp+=first?2:1;SV.wins=(SV.wins||0)+1;S.nf=!!S.o.u&&!SV.ul[S.o.u];if(S.o.u)SV.ul[S.o.u]=1;S.fb=first;save()}S.msg=m+(S.g[0]<=0&&S.g[1]<=0?' Match nul.':win?' Victoire ! +'+(S.fb?'2 boosters (première victoire)':'1 booster')+(S.nf?'. Faction débloquée : '+FA[S.o.u].n+' !':'.'):' Défaite, rien gagné. Retente ta chance !');return render()}
+ S.msg=m+' Manche suivante…';S.lock=1;render();
+ setTimeout(()=>{rst(w);S.hn=[[0,0,0],[0,0,0]];S.wx=[0,0,0];S.ps=[0,0];S.r++;sk();S.lock=0;S.t=st;
+  if(!S.h[0].length&&!S.h[1].length){S.over=1;S.msg='Plus de cartes : fin du match.';return render()}
+  S.msg=st?'L’adversaire commence.':'À toi de commencer.';turn(1-st)},1800)}
+function lead(p){if(!S.ld[p])return;S.ld[p]=0;const f=S.L[p].k,o=1-p;
+ if(f==='clear')S.wx=[0,0,0];
+ else if(f==='disc')for(let i=0;i<2&&S.h[o].length;i++)S.gy[o].push(S.h[o].splice(Math.random()*S.h[o].length|0,1)[0]);
+ else if(f==='hornM')S.hn[p][0]=1;
+ else if(f==='hornR')S.hn[p][1]=1;
+ else if(f==='hornS')S.hn[p][2]=1;
+ else if(f==='draw')S.h[p].push(...S.d[p].splice(0,2));
+ 
+ else for(let i=0;i<2&&S.gy[p].length;i++){const k=S.gy[p].splice(Math.random()*S.gy[p].length|0,1)[0];S.b[p][k.r].push(k)}
+ S.msg=(p?'L’adversaire utilise son chef : ':'Tu utilises ton chef : ')+S.L[p].n+' ('+S.L[p].e+').';turn(p)}
+function leadOK(d){const f=S.L[1].k,sm=r=>S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);
+ return f==='clear'?tot(1,[0,0,0])-tot(0,[0,0,0])-d>=5:f==='disc'?S.h[0].length>=4&&d<=0:f==='hornM'?sm(0)>=7&&!S.hn[1][0]:f==='hornR'?sm(1)>=7&&!S.hn[1][1]:f==='hornS'?sm(2)>=7&&!S.hn[1][2]:f==='draw'?S.h[1].length<=6:S.gy[1].length>=2&&S.r>=2}
+function pick(k,o){document.getElementById('app').innerHTML=`<p>${FA[k].n} — choisis ton chef (une fois par partie). Deck : ${SV.dk&&SV.dk[k]?'personnalisé':'toutes tes cartes'} :</p>`+FA[k].ls.map((l,i)=>`<button class="card fac lc" data-i="${i}"><span><b>★ ${l.n}</b></span><i>${l.e}</i></button>`).join('')+'<button class="btn s" id="back">Retour</button>';
+ document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>init(k,+b.dataset.i,o));document.getElementById('back').onclick=()=>menu(o)}
+const ldCard=()=>{const l=S.L[0],ok=S.ld[0]&&S.mul<=0&&S.t===0&&!S.over&&!S.lock&&!S.ps[0];return `<button class="card lc" id="lead" style="flex:0 0 120px" ${ok?'':'disabled'}><b>★</b><span>${l.n}</span><i>Chef · ${S.ld[0]?l.e:'utilisé'}</i></button>`};
+let SV={col:{},bp:2,wins:0,ul:{nr:1},beat:{}};try{SV=Object.assign(SV,JSON.parse(localStorage.getItem('gwynt-sv')||'{}'))}catch(e){}
+SV.ul=SV.ul||{nr:1};SV.beat=SV.beat||{};SV.cc=SV.cc||[];
+if(!SV.st){SV.st=1;SV.dk={};Object.entries({'Ves':2,'Yarpen Zigrin':2,'Rubans bleus':2,'Fantassin':3,'Keira Metz':2,'Sheldon Skaggs':2,'Sabrina Glevissig':2,'Archer de Dun Banner':2,'Arbalétrier':2,'Baliste':1,'Tour de siège':1,'Trébuchet':1}).forEach(([n,k])=>SV.col[n]=Math.max(SV.col[n]||0,k))}
+const save=()=>{try{localStorage.setItem('gwynt-sv',JSON.stringify(SV))}catch(e){}},$=id=>document.getElementById(id);
+const CAT=[],seen={};Object.values(FA).forEach(f=>f.c.forEach(c=>{if(!seen[c.n]){seen[c.n]=1;CAT.push(c)}}));
+const RAR=c=>c.rr!==undefined?c.rr:c.h?3:c.w!==undefined||c.hn||c.a==='spy'?2:c.p>=7?1:0,RL=['Commune','Rare','Épique','Légendaire'];
+const own=()=>CAT.filter(c=>SV.col[c.n]).length;
+const tile=(c,n,nw)=>`<div class="card tl rr${RAR(c)}"><b>${c.w!==undefined?'☁':c.hn?'♪':c.p}</b><span>${c.n}${n>1?' ×'+n:''}</span><i>${nw?'NOUVELLE · ':''}${RL[RAR(c)]}${c.r!==undefined?' · '+RN[c.r]:''}</i></div>`;
+function roll(){const r=Math.random()*100,k=r<5?3:r<15?2:r<40?1:0,P=pool(),p=P.filter(c=>RAR(c)===k);return(p.length?p:P)[Math.random()*(p.length||P.length)|0]}
+function home(){const n=own(),w=SV.wins||0;$('app').innerHTML=`<p>${n} / ${CAT.length} cartes (${Math.round(n*100/CAT.length)} %) · ${SV.bp} booster${SV.bp>1?'s':''} · ${w} victoire${w>1?'s':''}</p><button class="card fac" id="h1"><span><b>Jouer</b></span><i>Affronte des adversaires : une victoire = 1 booster, une défaite ne donne rien.</i></button><button class="card fac" id="h2"><span><b>Collection</b></span><i>L’album de toutes les cartes du jeu.</i></button><button class="card fac" id="h3" ${SV.bp?'':'disabled'}><span><b>Ouvrir un booster (${SV.bp})</b></span><i>3 cartes tirées selon leur rareté.</i></button><button class="card fac" id="h4"><span><b>Mes decks</b></span><i>Compose ton deck avec ta collection.</i></button><button class="card fac" id="h5"><span><b>Tournois</b></span><i>Enchaîne les adversaires pour gagner une carte garantie.</i></button><button class="card fac" id="h6"><span><b>Atelier de cartes</b></span><i>Crée tes propres cartes.</i></button><button class="card fac" id="h7"><span><b>Partie personnalisée</b></span><i>Joue avec tes cartes créées, sans récompense.</i></button>`;
+ $('h1').onclick=opps;$('h2').onclick=coll;$('h3').onclick=openB;$('h4').onclick=decks;$('h5').onclick=tourn;$('h6').onclick=gate;$('h7').onclick=cust}
+function coll(){const L=CAT.slice().sort((a,b)=>RAR(b)-RAR(a)||a.n.localeCompare(b.n));
+ $('app').innerHTML=`<p>Collection : ${own()} / ${CAT.length}</p><div class="grid">${L.map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):`<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>${RL[RAR(c)]}</i></div>`).join('')}</div>${SV.cc.filter(c=>c.bo).length?'<p>Cartes spéciales :</p><div class="grid">'+SV.cc.filter(c=>c.bo).map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):'<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>Spéciale</i></div>').join('')+'</div>':''}<button class="btn s" id="bk" style="margin-top:8px">Retour</button>`;$('bk').onclick=home}
+function openB(){if(SV.bp<1)return;SV.bp--;const g=[roll(),roll(),roll()].map(c=>{const nw=!SV.col[c.n];SV.col[c.n]=(SV.col[c.n]||0)+1;return tile(c,0,nw)});save();
+ $('app').innerHTML=`<p>Ton booster :</p><div class="grid">${g.join('')}</div><button class="btn" id="bk" style="margin-top:8px">${SV.bp?'Continuer ('+SV.bp+' restant'+(SV.bp>1?'s':'')+')':'Terminer'}</button>`;$('bk').onclick=home}
+const uc=f=>[...new Map([...FA[f].c,...SV.cc.filter(c=>c.bo&&(c.f===f||c.f==='neu'))].map(c=>[c.n,c])).values()],isSp=c=>c.w!==undefined||c.hn;
+const av=c=>SV.col[c.n]||0;
+const cur=f=>SV.dk&&SV.dk[f]||Object.fromEntries(uc(f).map(c=>[c.n,isSp(c)?Math.min(av(c),1):av(c)]));
+const stat=(f,d=cur(f))=>{let u=0,s=0;uc(f).forEach(c=>{const k=d[c.n]||0;isSp(c)?s+=k:u+=k});return{u,s,ok:u>=22&&s<=10}};
+const myDeck=f=>{const d=cur(f);return uc(f).flatMap(c=>Array.from({length:d[c.n]||0},()=>c))};
+function decks(){$('app').innerHTML='<p>Mes decks — choisis une faction :</p>'+Object.keys(FA).map(k=>{const sv=SV.dk&&SV.dk[k],s=stat(k);return `<button class="card fac" data-k="${k}"><span><b>${FA[k].n}</b></span><i>${!SV.ul[k]?'Faction verrouillée':s.ok?'Deck valide':'Deck incomplet'}</i></button>`}).join('')+'<button class="btn s" id="bk">Retour</button>';
+ document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>bld(b.dataset.k));$('bk').onclick=home}
+function bld(f){const d=cur(f),s=stat(f,d);
+ $('app').innerHTML=`<p><b>${FA[f].n}</b> — unités ${s.u} (min 22), spéciales ${s.s} (max 10) · <span style="color:${s.ok?'#6c6':'#d66'}">${s.ok?'deck valide':'deck invalide : faction injouable tant qu’il n’est pas complet'}</span></p>`+uc(f).sort((a,b)=>RAR(b)-RAR(a)||a.n.localeCompare(b.n)).map(c=>{const k=d[c.n]||0,m=av(c);return `<div class="dr rr${RAR(c)}"><span>${c.n} · ${isSp(c)?'spéciale':c.p+' '+RN[c.r]} · ${RL[RAR(c)]}</span><span><button class="btn s" data-n="${c.n}" data-v="-1" ${k?'':'disabled'}>−</button> ${k}/${m} <button class="btn s" data-n="${c.n}" data-v="1" ${k<m?'':'disabled'}>+</button></span></div>`}).join('')+`<p><button class="btn s" id="rs">Réinitialiser</button> <button class="btn" id="bk">Retour</button></p>`;
+ document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const n=b.dataset.n,x=cur(f);x[n]=(x[n]||0)+ +b.dataset.v;SV.dk=SV.dk||{};SV.dk[f]=x;save();bld(f)});
+ $('rs').onclick=()=>{if(SV.dk)delete SV.dk[f];save();bld(f)};$('bk').onclick=decks}
+const OPP=[
+{id:'pay',n:'Le paysan',d:'Facile',f:'nr',lv:0,li:-1,deck:()=>{const x=POOL.filter(c=>c.p<=4&&c.a!=='spy');return[...x,...x]}},
+{id:'aub',n:'L’aubergiste',d:'Intermédiaire',f:'nr',lv:1,li:-1,req:['pay'],deck:()=>POOL.filter(c=>!c.h&&(c.p<=6||c.w>=0))},
+{id:'dij',n:'Sigismund Dijkstra',d:'Difficile',f:'nr',lv:2,li:0,req:['aub'],deck:()=>POOL.filter(c=>c.n!=='Geralt de Riv')},
+{id:'emh',n:'Emhyr var Emreis',d:'Expert',f:'ni',lv:3,li:0,req:['dij'],u:'ni',deck:()=>FA.ni.c},
+{id:'ere',n:'Eredin',d:'Expert',f:'mo',lv:3,li:0,req:['dij'],u:'mo',deck:()=>FA.mo.c},
+{id:'fra',n:'Francesca Findabair',d:'Expert',f:'sc',lv:3,li:0,req:['dij'],u:'sc',deck:()=>FA.sc.c},
+{id:'cra',n:'Crach an Craite',d:'Expert',f:'sk',lv:3,li:0,req:['dij'],u:'sk',deck:()=>FA.sk.c},
+{id:'ger',n:'Geralt de Riv',d:'Légendaire',f:'nr',lv:4,li:1,req:['emh','ere','fra','cra'],deck:()=>POOL}];
+function opps(){$('app').innerHTML='<p>Choisis ton adversaire :</p>'+OPP.map((o,i)=>{const ok=!o.req||o.req.every(x=>SV.beat[x]);return `<button class="card fac" data-i="${i}" ${ok?'':'disabled'}><span><b>${ok?'':'🔒 '}${o.n}${SV.beat[o.id]?' ✓':''}</b></span><i>${o.d} · ${FA[o.f].n}${o.u&&!SV.ul[o.u]?' · bats-le pour débloquer cette faction':''}</i></button>`}).join('')+'<button class="btn s" id="bk">Retour</button>';
+ document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>menu(OPP[+b.dataset.i]));$('bk').onclick=home}
+function menu(o){$('app').innerHTML=`<p>Contre ${o.n} — choisis ta faction :</p>`+Object.keys(FA).map(k=>{const ul=SV.ul[k],ok=ul&&stat(k).ok;return `<button class="card fac" data-k="${k}" ${ok?'':'disabled'}><span><b>${ul?'':'🔒 '}${FA[k].n}</b></span><i>${!ul?'Bats son chef pour la débloquer.':ok?FA[k].d:'Deck incomplet : compose-le dans Mes decks (22 unités minimum).'}</i></button>`}).join('')+'<button class="btn s" id="mb">Retour</button>';
+ document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>pick(b.dataset.k,o));$('mb').onclick=o.tr?tourn:o.cust?cust:opps}
+function aiS(H,d,op){const pl=i=>play(1,i,H[i].hn?bestHorn()[0]:undefined),nP=S.h[0].length,must=S.g[1]===1||S.g[0]===1||S.r>=3;
+ if(S.ld[1]&&leadOK(d))return lead(1);
+ const si=H.findIndex(c=>c.a==='spy'&&d-c.p>0);
+ if(si>=0&&(op||d-H[si].p>=4))return pl(si);
+ if((op||!nP)&&d>0)return pass(1);
+ const O=H.map((c,i)=>({i,c,g:gain(c,d)})).filter(x=>x.g>0&&x.c.a!=='spy').sort((a,b)=>a.g-b.g),N=O.filter(x=>!x.c.h);
+ if(d>0){if(d>=(S.r===1?5:S.r===2?7:11))return pass(1);return N[0]?pl(N[0].i):pass(1)}
+ const need=1-d,one=N.find(x=>x.g>=need);
+ if(one&&(must||one.g<8))return pl(one.i);
+ if(!must)return pass(1);
+ const x=O.find(x=>x.g>=need)||O[O.length-1];return x?pl(x.i):pass(1)}
+const TRN=[
+{id:'roy',n:'Tournoi des Royaumes',o:[0,1,2],k:1,b:0,req:['pay'],d:'3 adversaires, du paysan à Dijkstra. Récompense : une carte rare garantie.'},
+{id:'exp',n:'Tournoi des Experts',o:[3,4,5,6],k:2,b:1,req:['dij'],d:'Les 4 chefs de faction à la suite. Récompense : une carte épique garantie + 1 booster.'},
+{id:'leg',n:'Tournoi légendaire',o:[4,6,7],k:3,b:2,req:['ger'],d:'Eredin, Crach puis Geralt. Récompense : une carte légendaire garantie + 2 boosters.'}];
+const day=()=>new Date().toISOString().slice(0,10),tOpp=(T,s)=>({...OPP[T.o[s]],tr:T,step:s});
+function tRew(T){const P=pool().filter(c=>RAR(c)===T.k),c=P[Math.random()*P.length|0];SV.col[c.n]=(SV.col[c.n]||0)+1;SV.bp+=T.b;return c}
+function trEnd(win,m){const T=S.o.tr,st=S.o.step,last=st>=T.o.length-1;
+ if(!win){S.msg=m+(S.g[0]<=0&&S.g[1]<=0?' Match nul.':' Défaite.')+' Tu es éliminé du tournoi, rien gagné.';return}
+ if(!last){S.msg=m+' Victoire ! Prochain adversaire : '+OPP[T.o[st+1]].n+'.';S.nx=1;return}
+ const c=tRew(T);SV.beat['t_'+T.id]=1;SV.wins=(SV.wins||0)+1;(SV.td=SV.td||{})[T.id]=day();save();
+ S.msg=m+' Tournoi remporté ! Récompense : '+c.n+' ('+RL[RAR(c)]+')'+(T.b?' + '+T.b+' booster'+(T.b>1?'s':''):'')+'.'}
+function tourn(){$('app').innerHTML='<p>Tournois — un par jour et par type. Tu gardes le même deck, une défaite t’élimine.</p>'+TRN.map((T,i)=>{const ok=T.req.every(x=>SV.beat[x]),dn=(SV.td||{})[T.id]===day();return `<button class="card fac" data-i="${i}" ${ok&&!dn?'':'disabled'}><span><b>${ok?'':'🔒 '}${T.n}${dn?' ✓':''}</b></span><i>${T.d}${ok?'':' Bats d’abord '+OPP.find(x=>x.id===T.req[0]).n+'.'}${dn?' Déjà remporté aujourd’hui, reviens demain.':''}</i></button>`}).join('')+'<button class="btn s" id="bk">Retour</button>';
+ document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>menu(tOpp(TRN[+b.dataset.i],0)));$('bk').onclick=home}
+function atelier(msg){$('app').innerHTML=`<p>Atelier de cartes — tes créations ne servent que dans les parties personnalisées.</p><div class="fm"><label>Nom<input id="cn" maxlength="24"></label><label>Faction<select id="cf"><option value="neu">Neutre</option>${Object.keys(FA).map(k=>`<option value="${k}">${FA[k].n}</option>`).join('')}</select></label><label>Puissance<input id="cp" type="number" min="1" max="12" value="5"></label><label>Rangée<select id="cr">${RN.map((n,i)=>`<option value="${i}">${n}</option>`).join('')}</select></label><label>Capacité<select id="ca"><option value="">Aucune (max 9)</option><option value="spy">Espion (max 6)</option><option value="bond">Lien étroit (max 6)</option><option value="hero">Héros (max 12)</option></select></label><label>Dans les boosters<select id="cb"><option value="">Non (parties personnalisées seulement)</option><option value="1">Oui</option></select></label><label>Rareté<select id="cq"><option value="">Automatique</option><option value="0">Commune</option><option value="1">Rare</option><option value="2">Épique</option><option value="3">Légendaire</option></select></label><button class="btn" id="cs">Créer la carte</button> <span id="cm" style="color:var(--or)">${msg||''}</span></div><p>Mes cartes (${SV.cc.length}) :</p>`+SV.cc.map((c,i)=>`<div class="dr rr${RAR(c)}"><span>${c.n} · ${c.p} ${RN[c.r]} · ${c.f==='neu'?'Neutre':FA[c.f].n}${c.h?' · héros':c.a?' · '+c.a:''}${c.bo?' · booster':''}</span><span><button class="btn s" data-t="${i}">Tester</button> <button class="btn s" data-d="${i}">Suppr.</button></span></div>`).join('')+'<p><button class="btn s" id="ex">Exporter mes cartes (JSON)</button> <button class="btn s" id="bk">Retour</button></p><div id="exo"></div>';
+ const er=t=>$('cm').textContent=t;
+ $('cs').onclick=()=>{const n=$('cn').value.trim(),f=$('cf').value,p=Math.round(+$('cp').value),r=+$('cr').value,a=$('ca').value,h=a==='hero',mx=h?12:a==='spy'||a==='bond'?6:9;
+  if(!n)return er('Donne un nom à ta carte.');
+  if(/[<>&"]/.test(n))return er('Caractères < > & " interdits.');
+  if(CAT.some(c=>c.n.toLowerCase()===n.toLowerCase())||SV.cc.some(c=>c.n.toLowerCase()===n.toLowerCase()))return er('Ce nom existe déjà.');
+  if(!(p>=1))return er('Puissance invalide.');
+  if(p>mx)return er('Carte trop puissante : maximum '+mx+' pour ce type.');
+  SV.cc.push({n,p,r,h,a:h?undefined:a||undefined,f,cu:1,bo:$('cb').value?1:0,rr:$('cq').value===''?undefined:+$('cq').value});save();atelier('Carte créée !')};
+ document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{SV.cc.splice(+b.dataset.d,1);save();atelier()});
+ document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>init('nr',0,{...OPP[0],cust:1,test:SV.cc[+b.dataset.t]}));$('ex').onclick=()=>{$('exo').innerHTML='<textarea id="exa" readonly rows="6" style="width:100%;background:#141b22;color:var(--ag);border:1px solid var(--line)"></textarea>';$('exa').value=JSON.stringify(SV.cc,null,1);$('exa').select()};
+ $('bk').onclick=home}
+function cust(){$('app').innerHTML='<p>Partie personnalisée — tes cartes créées rejoignent ton deck. Aucune récompense ni progression.</p>'+OPP.map((o,i)=>`<button class="card fac" data-i="${i}"><span><b>${o.n}</b></span><i>${o.d} · ${FA[o.f].n}</i></button>`).join('')+'<button class="btn s" id="bk">Retour</button>';
+ document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>menu({...OPP[+b.dataset.i],cust:1}));$('bk').onclick=home}
+let ADM=0;
+const pool=()=>[...new Map([...Object.keys(FA).filter(f=>SV.ul[f]).flatMap(f=>FA[f].c),...SV.cc.filter(c=>c.bo&&(c.f==='neu'||SV.ul[c.f]))].map(c=>[c.n,c])).values()];
+function gate(){if(ADM)return atelier();const sp=!SV.pin;$('app').innerHTML=`<p>${sp?'Choisis un code secret pour protéger l’atelier :':'Atelier réservé : entre ton code.'}</p><div class="fm"><input id="pw" type="password"><button class="btn" id="pk" style="margin-top:6px">Valider</button> <span id="pm" style="color:var(--or)"></span></div><p><button class="btn s" id="bk">Retour</button></p>`;
+ $('pk').onclick=()=>{const v=$('pw').value;if(!v)return;if(sp){SV.pin=v;save();ADM=1;atelier()}else if(v===SV.pin){ADM=1;atelier()}else $('pm').textContent='Code incorrect.'};$('bk').onclick=home}
+function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
+function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
+ if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
+function ai(){if(S.over||S.lock||S.t!==1)return;
+ const H=S.h[1],d=tot(1)-tot(0),op=S.ps[0];
+ if(S.o.lv>=2&&H.length)return aiS(H,d,op);
+ if(!H.length||(op&&d>0))return pass(1);
+ if(!op&&d>=12&&H.length<=7)return pass(1);
+ if(S.o.lv===0){const i=Math.random()*H.length|0;if(!op&&d>=8||op&&d>0)return pass(1);return play(1,i,H[i].hn?bestHorn()[0]:undefined)}
+ if(S.ld[1]&&leadOK(d))return lead(1);
+ const o=H.map((c,i)=>({i,c,g:gain(c,d),k:(c.h?100:0)})).filter(x=>x.g>(x.c.w!==undefined||x.c.hn?3:0));
+ o.sort((a,b)=>a.k+a.g-b.k-b.g);
+ const pick=op?o.find(x=>d+x.g>0):o[0];
+ if(!pick)return pass(1);play(1,pick.i,pick.c.hn?bestHorn()[0]:undefined)}
+function rowH(p,r){const fx=S.wx[r];
+ return `<div class="row${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<span class="chip${c.h?' h':''}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
+function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
+function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];
+ document.getElementById('app').innerHTML=
+ `<div class="bar"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot">${tot(1)}</span></div>`+
+ [2,1,0].map(r=>rowH(1,r)).join('')+
+ `<div class="bar" style="margin-top:6px"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)}${S.ps[0]?' · tu as passé':''}</span><span class="tot">${tot(0)}</span></div>`+
+ [0,1,2].map(r=>rowH(0,r)).join('')+
+ `<div class="hand">${ldCard()}${S.h[0].map((c,i)=>c.hn?`<button class="card w${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}><b>♪</b><span>${c.n}</span><i>Double une rangée</i></button>`:c.w!==undefined
+  ?`<button class="card w" data-i="${i}" ${me?'':'disabled'}><b>☁</b><span>${c.n}</span><i>${c.w<0?'Annule la météo':RN[c.w]+' à 1'}</i></button>`
+  :`<button class="card${c.h?' h':''}" data-i="${i}" ${me?'':'disabled'}><b>${c.p}</b><span>${c.n}</span><i>${RN[c.r]}${c.h?' · héros':''}${c.a==='spy'?' · espion':c.a==='bond'?' · lien':''}</i></button>`).join('')}</div>`+
+ `<div class="act"><button class="btn" id="pass" ${me?'':'disabled'}>${S.mul>0?'Garder la main':'Passer'}</button><span id="msg">${S.msg}</span>${S.nx?'<button class="btn" id="nx">Match suivant</button>':''}${S.over?'<button class="btn s" id="again">Menu principal</button>':''}</div>`;
+ document.querySelectorAll('.card').forEach(b=>b.onclick=()=>{if(!me)return;const i=+b.dataset.i;
+ if(S.mul>0)return swap(i);
+ if(S.h[0][i].hn){S.sel=i;S.msg='Choisis la rangée du cor.';return render()}
+ play(0,i)});
+ document.querySelectorAll('.row.pick').forEach(e=>e.onclick=()=>me&&S.sel!=null&&play(0,S.sel,+e.dataset.r));
+ const p=document.getElementById('pass');if(p)p.onclick=()=>{if(!me)return;if(S.mul>0){S.mul=0;S.msg='À toi de jouer.';return begin()}pass(0)};
+ const a=document.getElementById('again');if(a)a.onclick=home;const nx=$('nx');if(nx)nx.onclick=()=>init(S.f[0],S.li,tOpp(S.o.tr,S.o.step+1));const ldb=document.getElementById('lead');if(ldb)ldb.onclick=()=>me&&S.ld[0]&&S.mul<=0&&lead(0)}
+home();
+</script></body></html>
