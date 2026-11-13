@@ -41,8 +41,36 @@ button.btn.s{background:#2b3844}button.btn:disabled{opacity:.5}
 .fm label{display:block;margin:6px 0;font-size:.85rem;color:var(--mut)}.fm input,.fm select{display:block;width:100%;margin-top:2px;background:#141b22;color:var(--ag);border:1px solid var(--line);padding:6px;border-radius:3px;font:inherit}.dr.rr1{border-color:#4f8cc9}.dr.rr2{border-color:#a66fd1}.dr.rr3{border-color:var(--or)}
 .hint{color:var(--mut);font-size:.75rem;margin-top:10px;line-height:1.4}
 @media (prefers-reduced-motion:no-preference){.card{transition:transform .12s}}
+/* habillage Witcher */
+:root{--bg:#0c0a08;--pan:#2a1d12;--line:#6b4f2a;--ag:#e8dcc0;--mut:#a39378;--or:#d9a441}
+html,body{background:radial-gradient(ellipse at 50% 0,#2b1d11 0,#0c0a08 70%) fixed;color:var(--ag)}
+main{margin:8px auto;background:repeating-linear-gradient(92deg,rgba(255,255,255,.015) 0 2px,rgba(0,0,0,.05) 2px 5px),linear-gradient(#1c130b,#140d07);border:2px solid #5c4322;border-radius:6px;box-shadow:0 0 0 1px #000,inset 0 0 40px #000a,0 10px 40px #000}
+h1{text-align:center;font-variant:small-caps;letter-spacing:.18em;font-size:1.7rem;color:var(--or);text-shadow:0 2px 0 #000,0 0 14px #d9a44155;margin:6px 0 12px}
+h1 small{display:block;font-size:.6rem;letter-spacing:.35em;color:var(--mut);margin-top:2px}
+.bar{background:linear-gradient(#3a2916,#241709);border:1px solid #7a5a2e;box-shadow:inset 0 1px 0 #ffffff14,0 2px 6px #0008}
+.tot{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#4a3520,#1a1008);border:2px solid var(--or);font-size:1.25rem;color:#f3d890;box-shadow:0 0 10px #d9a44144,inset 0 0 8px #000}
+.gem{color:#ff4b3a;text-shadow:0 0 8px #ff2a1a;font-size:1.2rem}.gem .off{color:#3a1612;text-shadow:none}
+.row{background:linear-gradient(#26180d,#1b1008);border:1px solid #6b4f2a;box-shadow:inset 0 2px 8px #000c,0 1px 0 #ffffff0d}
+.row.fx{background:linear-gradient(90deg,#1b3242,#1b1008 80%);box-shadow:inset 0 0 18px #7fb4cf33,inset 0 2px 8px #000c}
+.row.pick{outline:2px solid var(--or)}
+.rs{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#3d2b18,#150d06);border:2px solid #b8893a;color:#f3d890}
+.rn{color:var(--mut);font-variant:small-caps;letter-spacing:.06em}
+.chip{background:linear-gradient(#f0e2bd,#d4bd8a);color:#2a1a0a;border:1px solid #6b4f2a;box-shadow:0 1px 3px #000a}
+.chip b{background:radial-gradient(circle at 35% 30%,#4a3520,#1a1008);color:#f3d890;border:1px solid var(--or)}
+.chip.h{background:linear-gradient(#f6d77a,#c0912e);border-color:#7a5a1a}.chip.h b{background:#2a1a0a;color:var(--or)}.chip b.dn{color:#ff8f80}
+.hand{background:linear-gradient(#1a1008,#120a05);border-top:2px solid #6b4f2a;padding:12px 6px 8px}
+.card{background:linear-gradient(#f0e2bd,#cdb67f);color:#2a1a0a;border:2px solid #6b4f2a;box-shadow:0 3px 8px #000a,inset 0 0 0 2px #ffffff30}
+.card b{color:#2a1a0a}.card i{color:#5a4325}
+.card.h{background:linear-gradient(#f6d77a,#c0912e);border-color:#7a5a1a;box-shadow:0 0 12px #d9a44166,0 3px 8px #000a}
+.card.w{background:linear-gradient(#dcebf3,#8fb6c9);border-color:#3f7d9e}.card.w b{color:#18425b}.card.w i{color:#27536b}
+.card.lc{background:linear-gradient(#3a2455,#1d1030);color:#eadcff;border-color:#b07cd8;box-shadow:0 0 12px #b07cd855,0 3px 8px #000a}.card.lc b{color:#d9b8ff}.card.lc i{color:#cdb8e8}
+.card.fac b{font-variant:small-caps;letter-spacing:.08em}
+.dr{background:linear-gradient(#26180d,#1b1008);color:var(--ag)}
+button.btn{background:linear-gradient(#a8331f,#6e1b10);border:1px solid var(--or);color:#f3e6c4;font-variant:small-caps;letter-spacing:.06em;box-shadow:0 2px 6px #000a}
+button.btn.s{background:linear-gradient(#4a3520,#2a1b0d);border-color:#7a5a2e}
+#msg{color:#f3d890}
 </style></head><body><main>
-<h1>Gwynt — prototype</h1>
+<h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
 <div id="app"></div>
 <p class="hint">Règles retenues : 10 cartes en main, 2 manches à gagner, égalité = chacun perd une gemme, les héros (bordure dorée) ignorent la météo. Gelée : mêlée à 1, brouillard : distance à 1, pluie : siège à 1, temps clair annule tout. Capacités : espion (la carte passe chez l’adversaire et tu pioches 2 cartes), lien (les cartes identiques d’une même rangée se multiplient), cor (double une rangée, clique ensuite sur la rangée). 5 factions avec une capacité passive et un chef (voir le menu de départ). Le chef s’utilise une fois par partie avec la carte violette ★ au début de ta main (tu choisis ton chef après ta faction) ; elle compte comme ton tour. Les boosters et la collection sont sauvegardés dans ce navigateur.</p>
 </main>
@@ -197,6 +225,7 @@ let ADM=0;
 const pool=()=>[...new Map([...Object.keys(FA).filter(f=>SV.ul[f]).flatMap(f=>FA[f].c),...SV.cc.filter(c=>c.bo&&(c.f==='neu'||SV.ul[c.f]))].map(c=>[c.n,c])).values()];
 function gate(){if(ADM)return atelier();const sp=!SV.pin;$('app').innerHTML=`<p>${sp?'Choisis un code secret pour protéger l’atelier :':'Atelier réservé : entre ton code.'}</p><div class="fm"><input id="pw" type="password"><button class="btn" id="pk" style="margin-top:6px">Valider</button> <span id="pm" style="color:var(--or)"></span></div><p><button class="btn s" id="bk">Retour</button></p>`;
  $('pk').onclick=()=>{const v=$('pw').value;if(!v)return;if(sp){SV.pin=v;save();ADM=1;atelier()}else if(v===SV.pin){ADM=1;atelier()}else $('pm').textContent='Code incorrect.'};$('bk').onclick=home}
+const FC={nr:'#3d7ec7',ni:'#c9b458',mo:'#b03a2e',sc:'#4c9a3c',sk:'#5b8fc0'};
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
@@ -216,9 +245,9 @@ function rowH(p,r){const fx=S.wx[r];
 function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
 function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];
  document.getElementById('app').innerHTML=
- `<div class="bar"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot">${tot(1)}</span></div>`+
+ `<div class="bar" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot">${tot(1)}</span></div>`+
  [2,1,0].map(r=>rowH(1,r)).join('')+
- `<div class="bar" style="margin-top:6px"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)}${S.ps[0]?' · tu as passé':''}</span><span class="tot">${tot(0)}</span></div>`+
+ `<div class="bar" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)}${S.ps[0]?' · tu as passé':''}</span><span class="tot">${tot(0)}</span></div>`+
  [0,1,2].map(r=>rowH(0,r)).join('')+
  `<div class="hand">${ldCard()}${S.h[0].map((c,i)=>c.hn?`<button class="card w${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}><b>♪</b><span>${c.n}</span><i>Double une rangée</i></button>`:c.w!==undefined
   ?`<button class="card w" data-i="${i}" ${me?'':'disabled'}><b>☁</b><span>${c.n}</span><i>${c.w<0?'Annule la météo':RN[c.w]+' à 1'}</i></button>`
