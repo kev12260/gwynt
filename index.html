@@ -106,6 +106,31 @@ button.btn.s{background:linear-gradient(#4a3520,#2a1b0d);border-color:#7a5a2e}
 .pc.rr2.rv{box-shadow:0 0 18px #a66fd1}.pc.rr3.rv{box-shadow:0 0 26px #d9a441}
 .zm{position:fixed;inset:0;z-index:50;background:#000c;display:grid;place-items:center;padding:16px}.zc{width:min(78vw,340px)}.zc p{font-size:.7rem;color:var(--mut);text-align:center}
 @media (prefers-reduced-motion:no-preference){.pc.rv{animation:flipIn .65s both}.pc.rr3::after{content:"";position:absolute;inset:0;border-radius:.5em;pointer-events:none;background:linear-gradient(115deg,transparent 30%,#ffffff38 45%,transparent 60%);background-size:250% 100%;animation:holo 3.2s linear infinite}@keyframes holo{from{background-position:150% 0}to{background-position:-100% 0}}.card.hc:hover:not(:disabled){transform:translateY(-8px)}}
+/* carte modèle */
+.gw{container-type:inline-size;width:100%}
+.pc{--f1:#1d1d20;--f2:#08080a;--a1:#a9c4d6;--a2:#54748c;--a3:#1a2733;display:block;gap:0;border:0;padding:.28em;border-radius:.9em;font-size:calc(100cqw/20);background:linear-gradient(135deg,#f6dc8c,#a97a2a 35%,#f2d68a 55%,#6d4a12);box-shadow:0 .4em 1.2em #000b}
+.pc.sm{font-size:calc(100cqw/10.5)}.pc.tl{font-size:calc(100cqw/11)}
+.pc[data-f=nr]{--f1:#2f63a8;--f2:#10264a;--a1:#8fb4e6;--a2:#2f63a8;--a3:#0e1c33}.pc[data-f=ni]{--f1:#8a6d1c;--f2:#352806;--a1:#e6cf7c;--a2:#8a6d1c;--a3:#241b05}.pc[data-f=mo]{--f1:#a02b22;--f2:#3a0e0a;--a1:#e69a8f;--a2:#a02b22;--a3:#2a0907}.pc[data-f=sc]{--f1:#33853a;--f2:#103614;--a1:#96d99c;--a2:#33853a;--a3:#0b2410}.pc[data-f=sk]{--f1:#2b8d98;--f2:#0e3a40;--a1:#8fd5dd;--a2:#2b8d98;--a3:#0a2a2f}
+.gi{position:relative;height:100%;border-radius:.7em;overflow:hidden;background:#0d1117;border:.12em solid #3b2a10;box-shadow:inset 0 0 0 .1em #d9a44155}
+.ga{position:absolute;inset:0 0 32% 0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 18%,var(--a1) 0,var(--a2) 36%,var(--a3) 82%)}
+.ga::after{content:"";position:absolute;inset:60% 0 0;z-index:3;background:linear-gradient(#0000,#0d1117)}
+.ga img{position:absolute;z-index:1;left:50%;top:1%;height:108%;width:auto;max-width:none;transform:translateX(-50%)}
+.pe{position:relative;z-index:1;font-size:3.6em;filter:drop-shadow(0 .05em .1em #000a)}
+.gcol{position:absolute;z-index:5;left:.55em;top:.5em;width:2.9em;padding:.65em 0 1.7em;display:flex;flex-direction:column;align-items:center;gap:.55em;background:linear-gradient(#f6dc8c,#a97a2a 55%,#f2d68a);clip-path:polygon(0 0,100% 0,100% 90%,50% 100%,0 90%)}
+.gcol::before{content:"";position:absolute;inset:.14em .14em .17em;background:linear-gradient(var(--f1),var(--f2));clip-path:polygon(0 0,100% 0,100% 90%,50% 100%,0 90%)}
+.gcol>*{position:relative}
+.gpw{width:2.2em;height:2.5em;display:grid;place-items:center;background:linear-gradient(#f6dc8c,#a97a2a);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.gpw::before{content:"";position:absolute;inset:.16em;background:radial-gradient(#3a2916,#140d07);clip-path:inherit}
+.gpw span{position:relative;color:#f3d890;font-weight:800;font-size:1.3em}.gpw.x{display:none}
+.grm{width:2em;height:2em;border-radius:50%;display:grid;place-items:center;background:radial-gradient(#3a2916,#140d07);border:.12em solid #d9a441;color:#d9a441;line-height:1}.grm svg{width:1.35em;height:1.35em}
+.gem0{color:#d9a441;font-size:1.2em;line-height:1}
+.gg{position:absolute;z-index:5;top:.8em;right:.8em;width:1em;height:1em;transform:rotate(45deg);background:#8a7a5a;border:.1em solid #000a}
+.rr1 .gg{background:#4f8cc9}.rr2 .gg{background:#a66fd1}.rr3 .gg{background:#d9a441;box-shadow:0 0 .7em #d9a441}
+.gban{position:absolute;z-index:6;left:.5em;right:.5em;bottom:calc(32% - 1.2em);height:2.3em;padding:0 1em;display:block;text-align:center;line-height:2.3em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:linear-gradient(90deg,#a97a2a,#3a2916 12%,#3a2916 88%,#a97a2a);clip-path:polygon(2% 0,98% 0,100% 50%,98% 100%,2% 100%,0 50%);font-variant:small-caps;letter-spacing:.1em;font-weight:700;color:#f3d890;font-size:1.15em;text-shadow:0 .08em .1em #000}
+.gtx{position:absolute;z-index:4;left:.6em;right:.6em;bottom:.6em;height:7em;padding:.7em .85em 0;background:linear-gradient(#f0e2bd,#d4bd8a);border-radius:.4em;color:#2a1a0a;font-size:.76em;line-height:1.3;overflow:hidden;box-shadow:inset 0 0 .6em #6b4f2a88;text-align:left}
+.gtx b{display:block;margin-bottom:.2em}.gtx i{display:block;color:#5a4325;margin-top:.2em}
+.pc.sm .ga,.pc.tl .ga{bottom:16%}.pc.sm .gtx,.pc.tl .gtx{display:none}.pc.sm .gban,.pc.tl .gban{bottom:.5em;font-size:.95em}
+.cnt{position:absolute;z-index:7;top:2.2em;right:.5em;background:#000a;color:#f3d890;padding:.1em .5em;border-radius:1em;font-size:.9em}
 </style></head><body><main>
 <button class="btn s" id="mu" style="float:right;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
@@ -289,7 +314,7 @@ const CFN={};{const k={};Object.keys(FA).forEach(f=>FA[f].c.forEach(c=>{(k[c.n]=
 const cfac=c=>c.f||CFN[c.n]||'neu',fcol=c=>FC[cfac(c)]||'#9aa3ab';
 const ART=c=>c.w!==undefined?(c.w<0?'☀️':['❄️','🌫️','🌧️'][c.w]):c.hn?'📯':c.a==='spy'?'🕵️':c.h?'👑':['⚔️','🏹','🏰'][c.r];
 const abil=c=>c.w!==undefined?(c.w<0?'Annule tous les effets météo.':'Réduit à 1 la puissance des unités de la rangée '+RN[c.w].toLowerCase()+' (sauf héros).'):c.hn?'Double la puissance des unités d’une rangée (sauf héros).':[c.h?'Héros : ignore la météo.':'',c.a==='spy'?'Espion : se pose chez l’adversaire, tu pioches 2 cartes.':'',c.a==='bond'?'Lien étroit : les cartes identiques de la rangée se multiplient.':''].filter(Boolean).join(' ')||'Unité simple.';
-function pc(c,o={}){const rr=RAR(c),p=c.w!==undefined||c.hn?'':c.p;return `<div class="pc rr${rr}${o.cls?' '+o.cls:''}" style="--fc:${fcol(c)}${o.st?';'+o.st:''}" data-z="${c.n}"><div class="pn">${c.n}</div><div class="pa"><span class="pe">${ART(c)}</span><img src="cards/${slug(c.n)}.png" alt="" onerror="this.remove()"></div><div class="pp">${p}</div><div class="pr"></div><div class="pt">${c.r!==undefined?RN[c.r]+' · ':''}${RL[rr]}${o.n>1?' ×'+o.n:''}</div><div class="px">${abil(c)}</div></div>`}
+function pcOld(c,o={}){const rr=RAR(c),p=c.w!==undefined||c.hn?'':c.p;return `<div class="pc rr${rr}${o.cls?' '+o.cls:''}" style="--fc:${fcol(c)}${o.st?';'+o.st:''}" data-z="${c.n}"><div class="pn">${c.n}</div><div class="pa"><span class="pe">${ART(c)}</span><img src="cards/${slug(c.n)}.png" alt="" onerror="this.remove()"></div><div class="pp">${p}</div><div class="pr"></div><div class="pt">${c.r!==undefined?RN[c.r]+' · ':''}${RL[rr]}${o.n>1?' ×'+o.n:''}</div><div class="px">${abil(c)}</div></div>`}
 const tile=(c,n,nw,dl,rv)=>pc(c,{n,cls:'tl'+(nw?' nw':'')+(rv?' rv':''),st:'--s:12px'+(dl!==undefined?';animation-delay:'+dl+'s':'')});
 const HB=(c,i,me)=>`<button class="card hc${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}>${pc(c,{cls:'sm',st:'--s:10px'})}</button>`;
 function zoom(n){const c=[...CAT,...SV.cc].find(x=>x.n===n);if(!c)return;const z=document.createElement('div');z.className='zm';z.innerHTML=`<div class="zc">${pc(c,{cls:'lg'})}<p>Illustration : cards/${slug(c.n)}.png · ${cfac(c)==='neu'||!FA[cfac(c)]?'Neutre':FA[cfac(c)].n}</p></div>`;z.onclick=()=>z.remove();document.body.appendChild(z)}
@@ -297,6 +322,10 @@ let LP=0,LT=0;
 document.addEventListener('pointerdown',e=>{const t=e.target.closest('.card.hc[data-i],.chip[data-z],.pc.tl[data-z]');if(!t)return;const n=t.dataset.z||(S&&S.h&&S.h[0][+t.dataset.i]&&S.h[0][+t.dataset.i].n);if(!n)return;clearTimeout(LT);LT=setTimeout(()=>{LP=1;zoom(n)},450)});
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>document.addEventListener(ev,()=>clearTimeout(LT)));
 document.addEventListener('click',e=>{if(LP){LP=0;return}const t=e.target.closest('.pc.tl[data-z],.chip[data-z]');if(t)zoom(t.dataset.z)});
+const ROWIC=c=>c.w!==undefined?'☁':c.hn?'♪':['<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M12 1.5l2.4 3.2V15h-4.8V4.7z"/><path d="M12 3v11" stroke="#140d07" stroke-width=".7"/><rect x="5.5" y="14.6" width="13" height="2.1" rx="1"/><rect x="10.9" y="16.7" width="2.2" height="4"/><circle cx="12" cy="21.6" r="1.4"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="#d9a441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3c9 3 9 15 0 18M8 3v18M8 12h12M17 9l3 3-3 3"/></svg>','<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M3 21V8h4v3h2V8h4v3h2V8h4v13z"/></svg>'][c.r];
+const FLV={'Geralt de Riv':'« Le monde n’a pas besoin de héros, seulement de quelqu’un qui finit le travail. »'};
+function pc(c,o={}){const rr=RAR(c),sp=c.w!==undefined||c.hn,t=sp?(c.hn?'Spéciale · Cor':'Spéciale · Météo'):(c.h?'Héros · ':'')+RN[c.r];
+ return `<div class="gw"><div class="pc rr${rr}${o.cls?' '+o.cls:''}" data-f="${cfac(c)}" style="${o.st||''}" data-z="${c.n}"><div class="gi"><div class="ga"><span class="pe">${ART(c)}</span><img src="cards/${slug(c.n)}.png" alt="" onerror="this.remove()"></div><div class="gcol"><div class="gpw${sp?' x':''}"><span>${sp?'':c.p}</span></div><div class="grm">${ROWIC(c)}</div><div class="gem0">✦</div></div><div class="gg"></div><div class="gban">${c.n}</div>${o.n>1?'<div class="cnt">×'+o.n+'</div>':''}<div class="gtx"><b>${t} · ${RL[rr]}</b>${abil(c)}${FLV[c.n]?'<i>'+FLV[c.n]+'</i>':''}</div></div></div></div>`}
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
