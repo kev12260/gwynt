@@ -69,6 +69,24 @@ h1 small{display:block;font-size:.6rem;letter-spacing:.35em;color:var(--mut);mar
 button.btn{background:linear-gradient(#a8331f,#6e1b10);border:1px solid var(--or);color:#f3e6c4;font-variant:small-caps;letter-spacing:.06em;box-shadow:0 2px 6px #000a}
 button.btn.s{background:linear-gradient(#4a3520,#2a1b0d);border-color:#7a5a2e}
 #msg{color:#f3d890}
+@media (prefers-reduced-motion:no-preference){
+.chip.pop{animation:pop .55s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{0%{transform:translateY(-40px) scale(1.7);opacity:0}60%{opacity:1;box-shadow:0 0 22px #d9a441}100%{transform:none}}
+.tot.bump{animation:bump .5s}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.35);color:#fff;box-shadow:0 0 22px #d9a441}100%{transform:scale(1)}}
+.row.wfx{animation:frost 1.1s}
+@keyframes frost{0%{filter:brightness(2.2) saturate(.3);box-shadow:inset 0 0 40px #bfe6ff}100%{filter:none}}
+.row.hfx{animation:horn 1s}
+@keyframes horn{0%{box-shadow:inset 0 0 40px #ffcf5a}100%{box-shadow:inset 0 2px 8px #000c}}
+.bar.think{animation:think 1s infinite alternate}
+@keyframes think{from{box-shadow:0 0 0 #0000}to{box-shadow:0 0 14px #d9a44188}}
+#msg{animation:msgIn .45s}
+@keyframes msgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.card.tl.rv{animation:flipIn .65s both}
+@keyframes flipIn{0%{transform:rotateY(90deg) scale(.7);opacity:0}60%{transform:rotateY(-8deg) scale(1.08);opacity:1}100%{transform:none;opacity:1}}
+.card.rr2.rv{box-shadow:0 0 18px #a66fd1}.card.rr3.rv{box-shadow:0 0 26px #d9a441}
+.hand .card:not(:disabled):hover{transform:translateY(-8px) scale(1.04)}
+}
 </style></head><body><main>
 <button class="btn s" id="mu" style="float:right;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
@@ -109,9 +127,9 @@ const rs=(p,r,wx=S.wx)=>rv(p,r,wx).reduce((s,v)=>s+v,0);
 const tot=(p,wx=S.wx)=>[0,1,2].reduce((s,r)=>s+rs(p,r,wx),0);
 function nwx(c){return c.w===-1?[0,0,0]:S.wx.map((v,i)=>i===c.w?1:v)}
 function play(p,i,row){const c=S.h[p].splice(i,1)[0];S.sel=null;snd(c.w!==undefined?'weather':c.hn?'horn':c.a==='spy'?'spy':c.h?'hero':'card');
- if(c.w!==undefined)S.wx=nwx(c);
- else if(c.hn)S.hn[p][row]=1;
- else{S.b[c.a==='spy'?1-p:p][c.r].push(c);if(c.a==='spy')S.h[p].push(...S.d[p].splice(0,2))}
+ if(c.w!==undefined){S.wx=nwx(c);S.wf=c.w===-1?[0,1,2]:[c.w]}
+ else if(c.hn){S.hn[p][row]=1;S.hf={p,r:row}}
+ else{const tg=c.a==='spy'?1-p:p;S.b[tg][c.r].push(c);S.fx={p:tg,r:c.r,k:S.b[tg][c.r].length-1};if(c.a==='spy')S.h[p].push(...S.d[p].splice(0,2))}
  S.msg=(p?'L’adversaire joue : ':'Tu joues : ')+c.n+(c.hn?' ('+RN[row]+')':'')+(c.a==='spy'?' (espion, +2 cartes)':'')+'.';turn(p)}
 function pass(p){snd('pass');S.ps[p]=1;S.msg=p?'L’adversaire passe.':'Tu passes.';turn(p)}
 function turn(p){
@@ -158,7 +176,7 @@ function home(){const n=own(),w=SV.wins||0;$('app').innerHTML=`<p>${n} / ${CAT.l
  $('h1').onclick=opps;$('h2').onclick=coll;$('h3').onclick=openB;$('h4').onclick=decks;$('h5').onclick=tourn;$('h6').onclick=gate;$('h7').onclick=cust}
 function coll(){const L=CAT.slice().sort((a,b)=>RAR(b)-RAR(a)||a.n.localeCompare(b.n));
  $('app').innerHTML=`<p>Collection : ${own()} / ${CAT.length}</p><div class="grid">${L.map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):`<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>${RL[RAR(c)]}</i></div>`).join('')}</div>${SV.cc.filter(c=>c.bo).length?'<p>Cartes spéciales :</p><div class="grid">'+SV.cc.filter(c=>c.bo).map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):'<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>Spéciale</i></div>').join('')+'</div>':''}<button class="btn s" id="bk" style="margin-top:8px">Retour</button>`;$('bk').onclick=home}
-function openB(){if(SV.bp<1)return;SV.bp--;snd('booster');const g=[roll(),roll(),roll()].map(c=>{const nw=!SV.col[c.n];SV.col[c.n]=(SV.col[c.n]||0)+1;return tile(c,0,nw)});save();
+function openB(){if(SV.bp<1)return;SV.bp--;snd('booster');const g=[roll(),roll(),roll()].map((c,i)=>{const nw=!SV.col[c.n];SV.col[c.n]=(SV.col[c.n]||0)+1;return tile(c,0,nw).replace('class="card tl','style="animation-delay:'+i*.35+'s" class="card tl rv')});save();
  $('app').innerHTML=`<p>Ton booster :</p><div class="grid">${g.join('')}</div><button class="btn" id="bk" style="margin-top:8px">${SV.bp?'Continuer ('+SV.bp+' restant'+(SV.bp>1?'s':'')+')':'Terminer'}</button>`;$('bk').onclick=home}
 const uc=f=>[...new Map([...FA[f].c,...SV.cc.filter(c=>c.bo&&(c.f===f||c.f==='neu'))].map(c=>[c.n,c])).values()],isSp=c=>c.w!==undefined||c.hn;
 const av=c=>SV.col[c.n]||0;
@@ -262,13 +280,13 @@ function ai(){if(S.over||S.lock||S.t!==1)return;
  const pick=op?o.find(x=>d+x.g>0):o[0];
  if(!pick)return pass(1);play(1,pick.i,pick.c.hn?bestHorn()[0]:undefined)}
 function rowH(p,r){const fx=S.wx[r];
- return `<div class="row${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<span class="chip${c.h?' h':''}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
+ return `<div class="row${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
 function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
-function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];
+function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T1=tot(1),bp=[S.pt&&S.pt[0]!==T0?' bump':'',S.pt&&S.pt[1]!==T1?' bump':''];S.pt=[T0,T1];setTimeout(()=>{S.fx=S.wf=S.hf=null},0);
  document.getElementById('app').innerHTML=
- `<div class="bar" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot">${tot(1)}</span></div>`+
+ `<div class="bar${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot${bp[1]}">${tot(1)}</span></div>`+
  [2,1,0].map(r=>rowH(1,r)).join('')+
- `<div class="bar" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)}${S.ps[0]?' · tu as passé':''}</span><span class="tot">${tot(0)}</span></div>`+
+ `<div class="bar" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)}${S.ps[0]?' · tu as passé':''}</span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
  [0,1,2].map(r=>rowH(0,r)).join('')+
  `<div class="hand">${ldCard()}${S.h[0].map((c,i)=>c.hn?`<button class="card w${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}><b>♪</b><span>${c.n}</span><i>Double une rangée</i></button>`:c.w!==undefined
   ?`<button class="card w" data-i="${i}" ${me?'':'disabled'}><b>☁</b><span>${c.n}</span><i>${c.w<0?'Annule la météo':RN[c.w]+' à 1'}</i></button>`
