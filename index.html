@@ -1,7 +1,15 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gwynt – Prototype</title>
+<title>Gwynt – Les Chroniques du Sorceleur</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#10151a">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gwynt">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
 :root{--bg:#10151a;--pan:#18212a;--line:#364552;--ag:#d4dbe0;--mut:#8896a2;--red:#b04444;--or:#d4a24e;--ice:#6fa8c4;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ag);font-family:Palatino,"Palatino Linotype",Georgia,serif}
@@ -224,4 +232,5 @@ function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];
  const p=document.getElementById('pass');if(p)p.onclick=()=>{if(!me)return;if(S.mul>0){S.mul=0;S.msg='À toi de jouer.';return begin()}pass(0)};
  const a=document.getElementById('again');if(a)a.onclick=home;const nx=$('nx');if(nx)nx.onclick=()=>init(S.f[0],S.li,tOpp(S.o.tr,S.o.step+1));const ldb=document.getElementById('lead');if(ldb)ldb.onclick=()=>me&&S.ld[0]&&S.mul<=0&&lead(0)}
 home();
-</script></body></html>
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
+</body></html>
