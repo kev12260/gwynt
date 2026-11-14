@@ -438,11 +438,11 @@ function openB(t){if(!pcount(t))return;
    if(left)$('nx').onclick=()=>openB(nx);$('en').onclick=home},1500)}}
 const WSVG='<svg viewBox="0 0 24 24"><path fill="#d9a441" d="M4 2L9.5 6Q12 5.2 14.5 6L20 2 19.5 10 21.5 13 16 19.5 12 22 8 19.5 2.5 13 4.5 10z"/><path fill="#140d07" d="M7 11l3 1.2-3 .8zM17 11l-3 1.2 3 .8zM10.5 17h3L12 19z"/></svg>';
 const wolf=()=>`<span class="wf"><img src="cards/loup.png" alt="" onload="this.parentNode.classList.add('ok')" onerror="this.remove()">${WSVG}</span>`;
+let SH=[];
+const CC=()=>{const d=day();return[...SV.cc,...SH.filter(c=>c.ty!=='ev'||((!c.from||c.from<=d)&&(!c.to||c.to>=d)))]};
 const cty=c=>c.ty||(c.bo?'ev':'no'),CAT0=CAT.slice();
 function syncCat(){CAT.length=0;CAT.push(...[...new Map([...CAT0,...CC().filter(c=>cty(c)==='base')].map(c=>[c.n,c])).values()])}
 SV.cc.forEach(c=>{if(!c.ty)c.ty=c.bo?'ev':'no';c.bo=c.ty==='ev'?1:0});syncCat();
-let SH=[];
-const CC=()=>{const d=day();return[...SV.cc,...SH.filter(c=>c.ty!=='ev'||((!c.from||c.from<=d)&&(!c.to||c.to>=d)))]};
 function loadShared(){try{fetch('cartes.json',{cache:'no-store'}).then(r=>r.ok?r.json():[]).then(a=>{if(!Array.isArray(a))return;const ok=/^[^<>&"]{1,24}$/,names=new Set(CAT0.map(c=>c.n.toLowerCase()));
  SH=a.filter(c=>c&&typeof c.n==='string'&&ok.test(c.n)&&c.ty!=='no'&&!names.has(c.n.toLowerCase())&&c.p>=1&&c.p<=15&&c.r>=0&&c.r<=2).map(c=>({n:c.n,p:+c.p,r:+c.r,h:!!c.h,a:c.a==='spy'||c.a==='bond'?c.a:undefined,f:FA[c.f]?c.f:'neu',ty:c.ty==='ev'?'ev':'base',bo:c.ty==='ev'?1:0,rr:c.rr,q:typeof c.q==='string'?c.q.slice(0,120).replace(/[<>&"]/g,''):undefined,from:c.from,to:c.to,sh:1}));
  syncCat();if($('h1'))home()}).catch(()=>{})}catch(e){}}
