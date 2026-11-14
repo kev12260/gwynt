@@ -1,15 +1,7 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gwynt – Les Chroniques du Sorceleur</title>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#10151a">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Gwynt">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
+<title>Gwynt – Prototype</title>
 <style>
 :root{--bg:#10151a;--pan:#18212a;--line:#364552;--ag:#d4dbe0;--mut:#8896a2;--red:#b04444;--or:#d4a24e;--ice:#6fa8c4;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ag);font-family:Palatino,"Palatino Linotype",Georgia,serif}
@@ -205,11 +197,11 @@ h1{padding:0 3rem 0 calc(3rem + .18em)}h1 small{padding-left:.35em}
 .wsm{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.25em}
 .cf .wf svg path:first-child{fill:#3a2410}.cf .wf svg path:last-child{fill:#f3d890}
 .dr{flex-wrap:wrap}select.tys{background:#141b22;color:var(--ag);border:1px solid var(--line);padding:2px;border-radius:3px;font:inherit;font-size:.8rem}
+.rd{background:#1b1008;border:1px solid #6b4f2a;border-radius:4px;margin:6px 0;padding:0 12px;text-align:left}.rd summary{cursor:pointer;padding:10px 0;font-variant:small-caps;letter-spacing:.06em;color:#f3d890;font-weight:700}.rd div{padding:0 0 12px;font-size:.9rem;line-height:1.5;color:var(--ag)}
 </style></head><body><main>
 <button class="btn s" id="mu" style="position:absolute;top:10px;right:10px;z-index:5;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
 <div id="app"></div>
-<p class="hint">Règles retenues : 10 cartes en main, 2 manches à gagner, égalité = chacun perd une gemme, les héros (bordure dorée) ignorent la météo. Gelée : mêlée à 1, brouillard : distance à 1, pluie : siège à 1, temps clair annule tout. Capacités : espion (la carte passe chez l’adversaire et tu pioches 2 cartes), lien (les cartes identiques d’une même rangée se multiplient), cor (double une rangée, clique ensuite sur la rangée). 5 factions avec une capacité passive et un chef (voir le menu de départ). Le chef s’utilise une fois par partie avec la carte violette ★ au début de ta main (tu choisis ton chef après ta faction) ; elle compte comme ton tour. Les boosters et la collection sont sauvegardés dans ce navigateur.</p>
 </main>
 <script>
 const RN=['Mêlée','Distance','Siège'],WN=['Gelée mordante','Brouillard épais','Pluie torrentielle'];
@@ -296,8 +288,8 @@ const RAR=c=>c.rr!==undefined?c.rr:c.h?3:c.w!==undefined||c.hn||c.a==='spy'?2:c.
 const own=()=>CAT.filter(c=>SV.col[c.n]).length;
 const tileOld=(c,n,nw)=>`<div class="card tl rr${RAR(c)}"><b>${c.w!==undefined?'☁':c.hn?'♪':c.p}</b><span>${c.n}${n>1?' ×'+n:''}</span><i>${nw?'NOUVELLE · ':''}${RL[RAR(c)]}${c.r!==undefined?' · '+RN[c.r]:''}</i></div>`;
 function rollOld(){const r=Math.random()*100,k=r<5?3:r<15?2:r<40?1:0,P=pool(),p=P.filter(c=>RAR(c)===k);return(p.length?p:P)[Math.random()*(p.length||P.length)|0]}
-function home(){const n=own(),w=SV.wins||0;$('app').innerHTML=`<p>${n} / ${CAT.length} cartes (${Math.round(n*100/CAT.length)} %) · ${TB()} booster${TB()>1?'s':''} · ${w} victoire${w>1?'s':''}</p><button class="card fac" id="h1"><span><b>Jouer</b></span><i>Affronte des adversaires : une victoire = 1 booster, une défaite ne donne rien.</i></button><button class="card fac" id="h2"><span><b>Collection</b></span><i>L’album de toutes les cartes du jeu.</i></button><button class="card fac" id="h3" ${TB()?'':'disabled'}><span><b>Boosters (${TB()})</b></span><i>Classiques, rares et spéciaux : 3 cartes par paquet.</i></button><button class="card fac" id="h4"><span><b>Mes decks</b></span><i>Compose ton deck avec ta collection.</i></button><button class="card fac" id="h5"><span><b>Tournois</b></span><i>Enchaîne les adversaires pour gagner une carte garantie.</i></button><button class="card fac" id="h6"><span><b>Atelier de cartes</b></span><i>Crée tes propres cartes.</i></button><button class="card fac" id="h7"><span><b>Partie personnalisée</b></span><i>Joue avec tes cartes créées, sans récompense.</i></button>`;
- $('h1').onclick=opps;$('h2').onclick=coll;$('h3').onclick=packs;$('h4').onclick=decks;$('h5').onclick=tourn;$('h6').onclick=gate;$('h7').onclick=cust}
+function home(){const n=own(),w=SV.wins||0;$('app').innerHTML=`<p>${n} / ${CAT.length} cartes (${Math.round(n*100/CAT.length)} %) · ${TB()} booster${TB()>1?'s':''} · ${w} victoire${w>1?'s':''}</p><button class="card fac" id="h1"><span><b>Jouer</b></span><i>Affronte des adversaires : une victoire = 1 booster, une défaite ne donne rien.</i></button><button class="card fac" id="h2"><span><b>Collection</b></span><i>L’album de toutes les cartes du jeu.</i></button><button class="card fac" id="h3" ${TB()?'':'disabled'}><span><b>Boosters (${TB()})</b></span><i>Classiques, rares et spéciaux : 3 cartes par paquet.</i></button><button class="card fac" id="h4"><span><b>Mes decks</b></span><i>Compose ton deck avec ta collection.</i></button><button class="card fac" id="h5"><span><b>Tournois</b></span><i>Enchaîne les adversaires pour gagner une carte garantie.</i></button><button class="card fac" id="h6"><span><b>Atelier de cartes</b></span><i>Crée tes propres cartes.</i></button><button class="card fac" id="h7"><span><b>Partie personnalisée</b></span><i>Joue avec tes cartes créées, sans récompense.</i></button><button class="card fac" id="h8"><span><b>Règles du jeu</b></span><i>Comment jouer, capacités, factions et progression.</i></button>`;
+ $('h1').onclick=opps;$('h2').onclick=coll;$('h3').onclick=packs;$('h4').onclick=decks;$('h5').onclick=tourn;$('h6').onclick=gate;$('h7').onclick=cust;$('h8').onclick=rules}
 function coll(){const L=CAT.slice().sort((a,b)=>RAR(b)-RAR(a)||a.n.localeCompare(b.n));
  $('app').innerHTML=`<p>Collection : ${own()} / ${CAT.length}</p><div class="grid">${L.map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):`<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>${RL[RAR(c)]}</i></div>`).join('')}</div>${CC().filter(c=>c.bo).length?'<p>Cartes spéciales :</p><div class="grid">'+CC().filter(c=>c.bo).map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):'<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>Spéciale</i></div>').join('')+'</div>':''}<button class="btn s" id="bk" style="margin-top:8px">Retour</button>`;$('bk').onclick=home}
 function openBOld(){if(SV.bp<1)return;SV.bp--;snd('booster');const g=[roll(),roll(),roll()].map((c,i)=>{const nw=!SV.col[c.n];SV.col[c.n]=(SV.col[c.n]||0)+1;return tile(c,0,nw,i*.35,1)});save();
@@ -447,6 +439,19 @@ function loadShared(){try{fetch('cartes.json',{cache:'no-store'}).then(r=>r.ok?r
  SH=a.filter(c=>c&&typeof c.n==='string'&&ok.test(c.n)&&c.ty!=='no'&&!names.has(c.n.toLowerCase())&&c.p>=1&&c.p<=15&&c.r>=0&&c.r<=2).map(c=>({n:c.n,p:+c.p,r:+c.r,h:!!c.h,a:c.a==='spy'||c.a==='bond'?c.a:undefined,f:FA[c.f]?c.f:'neu',ty:c.ty==='ev'?'ev':'base',bo:c.ty==='ev'?1:0,rr:c.rr,q:typeof c.q==='string'?c.q.slice(0,120).replace(/[<>&"]/g,''):undefined,from:c.from,to:c.to,sh:1}));
  syncCat();if($('h1'))home()}).catch(()=>{})}catch(e){}}
 loadShared();
+function rules(){const S2=[
+['But du jeu','Gagne <b>2 manches sur 3</b>. Chaque joueur a 2 gemmes ◆ : tu en perds une chaque fois que tu perds une manche.'],
+['Déroulement d’une manche','À tour de rôle, tu <b>joues une carte</b> ou tu <b>passes</b>. Quand les deux joueurs ont passé, celui dont le total de puissance est le plus élevé gagne la manche. En cas d’égalité, chacun perd une gemme (sauf Nilfgaard, qui gagne les égalités). Le vainqueur d’une manche commence la suivante.'],
+['Début de partie','Tu reçois 10 cartes. Tu peux en remplacer jusqu’à 2, puis une pièce décide qui commence : 🐺 pour toi, ⚔️ pour l’adversaire. Scoia’tael commence toujours.'],
+['Les rangées','Chaque unité se pose dans sa rangée : mêlée, distance ou siège. Le total de la manche est la somme des trois rangées.'],
+['La météo','<b>Gelée mordante</b> : mêlée à 1. <b>Brouillard épais</b> : distance à 1. <b>Pluie torrentielle</b> : siège à 1. <b>Temps clair</b> annule tout. Les héros ignorent la météo.'],
+['Les capacités','<b>Héros</b> : ignore la météo et le cor. <b>Espion</b> : se pose dans le camp adverse et te fait piocher 2 cartes. <b>Lien étroit</b> : les cartes identiques d’une même rangée se multiplient. <b>Cor de commandement</b> : double la puissance d’une rangée (choisis ensuite la rangée), sauf les héros.'],
+['Les factions','<b>Royaumes du Nord</b> : pioche 1 carte après chaque manche gagnée. <b>Nilfgaard</b> : gagne les égalités. <b>Monstres</b> : garde une unité au hasard sur le plateau après chaque manche. <b>Scoia’tael</b> : commence toujours. <b>Skellige</b> : au début de la manche 3, 2 unités du cimetière reviennent.'],
+['Le chef','Après ta faction, tu choisis un chef. Sa carte violette ★ est au début de ta main : elle s’utilise <b>une fois par partie</b> et compte comme ton tour.'],
+['Progression et boosters','Une victoire donne 1 booster classique (2 la première fois contre un adversaire). Une défaite ne donne rien. Battre le chef d’une faction la débloque. Les tournois donnent une carte garantie et des boosters rares, un par jour. Les boosters spéciaux sont réservés aux événements.'],
+['Ton deck','22 unités minimum, 10 cartes spéciales maximum. Seules les cartes que tu possèdes peuvent y entrer.'],
+['Sauvegarde','Ta collection, tes boosters et tes decks sont enregistrés dans ce navigateur, sur cet appareil.']];
+ $('app').innerHTML='<p>Règles du jeu — touche une section pour la lire.</p>'+S2.map((r,i)=>`<details class="rd"${i?'':' open'}><summary>${r[0]}</summary><div>${r[1]}</div></details>`).join('')+'<p><button class="btn s" id="bk">Retour</button></p>';$('bk').onclick=home}
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
@@ -483,5 +488,4 @@ function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T
  const a=document.getElementById('again');if(a)a.onclick=home;const nx=$('nx');if(nx)nx.onclick=()=>init(S.f[0],S.li,tOpp(S.o.tr,S.o.step+1));const ldb=document.getElementById('lead');if(ldb)ldb.onclick=()=>me&&S.ld[0]&&S.mul<=0&&lead(0)}
 const mu=$('mu'),mi=()=>mu.textContent=SV.mute?'🔇':'🔊';mi();mu.onclick=()=>{SV.mute=!SV.mute;save();mi();theme();snd('card')};addEventListener('pointerdown',theme);document.addEventListener('visibilitychange',()=>{if(TH)document.hidden?TH.pause():theme()});
 home();
-</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
-</body></html>
+</script></body></html>
