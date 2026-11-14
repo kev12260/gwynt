@@ -1,7 +1,15 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gwynt – Prototype</title>
+<title>Gwynt – Les Chroniques du Sorceleur</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#10151a">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gwynt">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
 :root{--bg:#10151a;--pan:#18212a;--line:#364552;--ag:#d4dbe0;--mut:#8896a2;--red:#b04444;--or:#d4a24e;--ice:#6fa8c4;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ag);font-family:Palatino,"Palatino Linotype",Georgia,serif}
@@ -198,6 +206,7 @@ h1{padding:0 3rem 0 calc(3rem + .18em)}h1 small{padding-left:.35em}
 .cf .wf svg path:first-child{fill:#3a2410}.cf .wf svg path:last-child{fill:#f3d890}
 .dr{flex-wrap:wrap}select.tys{background:#141b22;color:var(--ag);border:1px solid var(--line);padding:2px;border-radius:3px;font:inherit;font-size:.8rem}
 .rd{background:#1b1008;border:1px solid #6b4f2a;border-radius:4px;margin:6px 0;padding:0 12px;text-align:left}.rd summary{cursor:pointer;padding:10px 0;font-variant:small-caps;letter-spacing:.06em;color:#f3d890;font-weight:700}.rd div{padding:0 0 12px;font-size:.9rem;line-height:1.5;color:var(--ag)}
+.ocl{display:flex;flex-direction:column;gap:2px;width:160px;margin:6px 0 0 auto;padding:6px 10px;border-radius:4px;font-size:.78rem;line-height:1.25;background:linear-gradient(#3a2455,#1d1030);color:#eadcff;border:2px solid #b07cd8;box-shadow:0 0 10px #b07cd844,0 2px 6px #000a}.ocl b{color:#d9b8ff;font-variant:small-caps;letter-spacing:.06em}.ocl i{font-style:normal;color:#cdb8e8}.ocl.used{opacity:.5}
 </style></head><body><main>
 <button class="btn s" id="mu" style="position:absolute;top:10px;right:10px;z-index:5;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
@@ -452,6 +461,7 @@ function rules(){const S2=[
 ['Ton deck','22 unités minimum, 10 cartes spéciales maximum. Seules les cartes que tu possèdes peuvent y entrer.'],
 ['Sauvegarde','Ta collection, tes boosters et tes decks sont enregistrés dans ce navigateur, sur cet appareil.']];
  $('app').innerHTML='<p>Règles du jeu — touche une section pour la lire.</p>'+S2.map((r,i)=>`<details class="rd"${i?'':' open'}><summary>${r[0]}</summary><div>${r[1]}</div></details>`).join('')+'<p><button class="btn s" id="bk">Retour</button></p>';$('bk').onclick=home}
+const oppLd=()=>S.L[1].k==='none'?'':`<div class="ocl${S.ld[1]?'':' used'}"><b>★ Chef adverse</b><span>${S.L[1].n}</span><i>${S.ld[1]?S.L[1].e:'utilisé'}</i></div>`;
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
@@ -471,9 +481,9 @@ function rowH(p,r){const fx=S.wx[r];
 function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
 function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T1=tot(1),bp=[S.pt&&S.pt[0]!==T0?' bump':'',S.pt&&S.pt[1]!==T1?' bump':''];S.pt=[T0,T1];setTimeout(()=>{S.fx=S.wf=S.hf=S.dr=null},0);
  document.getElementById('app').innerHTML=
- `<div class="bar${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot${bp[1]}">${tot(1)}</span></div>`+
+ `<div class="bar${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot${bp[1]}">${tot(1)}</span></div>${oppLd()}`+
  [2,1,0].map(r=>rowH(1,r)).join('')+
- `<div class="wxb">${S.wx.some(v=>v)?'Météo : '+S.wx.map((v,i)=>v?['❄️ Gelée','🌫️ Brouillard','🌧️ Pluie'][i]+' ('+RN[i].toLowerCase()+')':'').filter(Boolean).join(' · '):'Terrain dégagé'}</div><div class="bar" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)}${S.ps[0]?' · tu as passé':''}</span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
+ `<div class="wxb">${S.wx.some(v=>v)?'Météo : '+S.wx.map((v,i)=>v?['❄️ Gelée','🌫️ Brouillard','🌧️ Pluie'][i]+' ('+RN[i].toLowerCase()+')':'').filter(Boolean).join(' · '):'Terrain dégagé'}</div><div class="bar" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)} · ${S.h[0].length} carte${S.h[0].length>1?'s':''}${S.ps[0]?' · tu as passé':''}</span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
  [0,1,2].map(r=>rowH(0,r)).join('')+
  `<div class="hand">${ldCard()}${S.h[0].map((c,i)=>HB(c,i,me)).join('')}<span style="display:none">${[].map((c,i)=>c.hn?`<button class="card w${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}><b>♪</b><span>${c.n}</span><i>Double une rangée</i></button>`:c.w!==undefined
   ?`<button class="card w" data-i="${i}" ${me?'':'disabled'}><b>☁</b><span>${c.n}</span><i>${c.w<0?'Annule la météo':RN[c.w]+' à 1'}</i></button>`
@@ -488,4 +498,5 @@ function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T
  const a=document.getElementById('again');if(a)a.onclick=home;const nx=$('nx');if(nx)nx.onclick=()=>init(S.f[0],S.li,tOpp(S.o.tr,S.o.step+1));const ldb=document.getElementById('lead');if(ldb)ldb.onclick=()=>me&&S.ld[0]&&S.mul<=0&&lead(0)}
 const mu=$('mu'),mi=()=>mu.textContent=SV.mute?'🔇':'🔊';mi();mu.onclick=()=>{SV.mute=!SV.mute;save();mi();theme();snd('card')};addEventListener('pointerdown',theme);document.addEventListener('visibilitychange',()=>{if(TH)document.hidden?TH.pause():theme()});
 home();
-</script></body></html>
+</script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
+</body></html>
