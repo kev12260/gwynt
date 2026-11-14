@@ -44,7 +44,7 @@ button.btn.s{background:#2b3844}button.btn:disabled{opacity:.5}
 /* habillage Witcher */
 :root{--bg:#0c0a08;--pan:#2a1d12;--line:#6b4f2a;--ag:#e8dcc0;--mut:#a39378;--or:#d9a441}
 html,body{background:radial-gradient(ellipse at 50% 0,#2b1d11 0,#0c0a08 70%) fixed;color:var(--ag)}
-main{margin:8px auto;background:repeating-linear-gradient(92deg,rgba(255,255,255,.015) 0 2px,rgba(0,0,0,.05) 2px 5px),linear-gradient(#1c130b,#140d07);border:2px solid #5c4322;border-radius:6px;box-shadow:0 0 0 1px #000,inset 0 0 40px #000a,0 10px 40px #000}
+main{position:relative;margin:8px auto;background:repeating-linear-gradient(92deg,rgba(255,255,255,.015) 0 2px,rgba(0,0,0,.05) 2px 5px),linear-gradient(#1c130b,#140d07);border:2px solid #5c4322;border-radius:6px;box-shadow:0 0 0 1px #000,inset 0 0 40px #000a,0 10px 40px #000}
 h1{text-align:center;font-variant:small-caps;letter-spacing:.18em;font-size:1.7rem;color:var(--or);text-shadow:0 2px 0 #000,0 0 14px #d9a44155;margin:6px 0 12px}
 h1 small{display:block;font-size:.6rem;letter-spacing:.35em;color:var(--mut);margin-top:2px}
 .bar{background:linear-gradient(#3a2916,#241709);border:1px solid #7a5a2e;box-shadow:inset 0 1px 0 #ffffff14,0 2px 6px #0008}
@@ -200,8 +200,12 @@ button.btn.s{background:linear-gradient(#4a3520,#2a1b0d);border-color:#7a5a2e}
 @keyframes pkfl{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
 .pk-r .pkb::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,#0000 35%,#fff7 50%,#0000 65%);transform:translateX(-100%);animation:pkrs 3.2s ease-in-out infinite;will-change:transform}@keyframes pkrs{to{transform:translateX(100%)}}
 }
+h1{padding:0 3rem 0 calc(3rem + .18em)}h1 small{padding-left:.35em}
+.wf{position:relative;display:inline-grid;place-items:center;width:100%;height:100%}.wf svg{width:70%;height:70%}.wf img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}.wf.ok svg{display:none}
+.wsm{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.25em}
+.cf .wf svg path:first-child{fill:#3a2410}.cf .wf svg path:last-child{fill:#f3d890}
 </style></head><body><main>
-<button class="btn s" id="mu" style="float:right;padding:4px 10px" title="Son">🔊</button>
+<button class="btn s" id="mu" style="position:absolute;top:10px;right:10px;z-index:5;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
 <div id="app"></div>
 <p class="hint">Règles retenues : 10 cartes en main, 2 manches à gagner, égalité = chacun perd une gemme, les héros (bordure dorée) ignorent la météo. Gelée : mêlée à 1, brouillard : distance à 1, pluie : siège à 1, temps clair annule tout. Capacités : espion (la carte passe chez l’adversaire et tu pioches 2 cartes), lien (les cartes identiques d’une même rangée se multiplient), cor (double une rangée, clique ensuite sur la rangée). 5 factions avec une capacité passive et un chef (voir le menu de départ). Le chef s’utilise une fois par partie avec la carte violette ★ au début de ta main (tu choisis ton chef après ta faction) ; elle compte comme ton tour. Les boosters et la collection sont sauvegardés dans ce navigateur.</p>
@@ -230,7 +234,7 @@ function menuOld(){document.getElementById('app').innerHTML='<p>Choisis ta facti
 function begin(){const a=S.f[0]==='sc',b=S.f[1]==='sc',w=a&&!b?0:b&&!a?1:Math.random()<.5?0:1,sc=a!==b;
  S.t=w;S.lock=1;render();
  const z=document.createElement('div');z.className='zm';
- z.innerHTML=`<div class="cw"><div class="coin" style="--end:${w?1980:1800}deg"><div class="cf">🐺</div><div class="cf b">⚔️</div></div><p id="ct">${sc?'Scoia’tael : le camp qui commence est déjà fixé…':'On lance la pièce…'}</p><p class="cl">🐺 Toi · ⚔️ Adversaire</p></div>`;
+ z.innerHTML=`<div class="cw"><div class="coin" style="--end:${w?1980:1800}deg"><div class="cf">${wolf()}</div><div class="cf b">⚔️</div></div><p id="ct">${sc?'Scoia’tael : le camp qui commence est déjà fixé…':'On lance la pièce…'}</p><p class="cl"><span class="wsm">${wolf()}</span> Toi · ⚔️ Adversaire</p></div>`;
  document.body.appendChild(z);snd('card');
  setTimeout(()=>{const t=document.getElementById('ct');if(t)t.textContent=w?'L’adversaire commence !':'Tu commences !'},1700);
  setTimeout(()=>{z.remove();S.lock=0;S.msg=w?'L’adversaire commence.':'À toi de commencer.';render();if(w===1)setTimeout(ai,700)},2900)}
@@ -414,7 +418,7 @@ Object.keys(FA).concat('neu').forEach(k=>{const im=new Image();im.onload=()=>{co
 const TB=()=>SV.bp+SV.bx.r+SV.bx.s,pcount=t=>t==='c'?SV.bp:SV.bx[t];
 const PKT={c:{n:'Booster classique',d:'Gagné en remporçant des parties'},r:{n:'Booster rare',d:'Gagné dans les tournois'},s:{n:'Booster spécial',d:'Réservé aux événements'}};
 const CRM=(()=>{const a=[],b=[];for(let i=0;i<=20;i++){a.push(i*5+'% '+(i%2?'2.5%':'0%'));b.push((100-i*5)+'% '+(i%2?'97.5%':'100%'))}return 'polygon('+a.concat(b).join(',')+')'})();
-function pack(t,n){return `<div class="pk pk-${t}" style="--cr:${CRM}"><div class="pkb"><div class="pkm">${t==='s'?'✦':t==='r'?'★':'🐺'}</div><div class="pkn">${t==='c'?'Classique':t==='r'?'Rare':'Spécial'}</div><div class="pks">GWYNT</div></div><div class="pkt"></div>${n!==undefined?'<div class="pkc">×'+n+'</div>':''}</div>`}
+function pack(t,n){return `<div class="pk pk-${t}" style="--cr:${CRM}"><div class="pkb"><div class="pkm">${t==='s'?'✦':t==='r'?'★':wolf()}</div><div class="pkn">${t==='c'?'Classique':t==='r'?'Rare':'Spécial'}</div><div class="pks">GWYNT</div></div><div class="pkt"></div>${n!==undefined?'<div class="pkc">×'+n+'</div>':''}</div>`}
 function rollT(t){const W={c:[60,25,10,5],r:[20,45,25,10],s:[0,30,45,25]}[t],r=Math.random()*100;let k=0,a=0;W.forEach((w,i)=>{a+=w;if(r>=a-w&&r<a)k=i});
  if(t==='s'){const E=SV.cc.filter(c=>c.bo&&(c.f==='neu'||SV.ul[c.f]));if(E.length&&Math.random()<.4)return E[Math.random()*E.length|0]}
  const P=pool(),p=P.filter(c=>RAR(c)===k);return(p.length?p:P)[Math.random()*(p.length||P.length)|0]}
@@ -431,6 +435,8 @@ function openB(t){if(!pcount(t))return;
    const nx=pcount(t)?t:['c','r','s'].find(u=>pcount(u)),left=TB();
    $('hn').innerHTML=`<button class="btn" id="nx" ${left?'':'style="display:none"'}>Ouvrir le suivant (${left})</button> <button class="btn s" id="en">Terminer</button>`;
    if(left)$('nx').onclick=()=>openB(nx);$('en').onclick=home},1500)}}
+const WSVG='<svg viewBox="0 0 24 24"><path fill="#d9a441" d="M4 2L9.5 6Q12 5.2 14.5 6L20 2 19.5 10 21.5 13 16 19.5 12 22 8 19.5 2.5 13 4.5 10z"/><path fill="#140d07" d="M7 11l3 1.2-3 .8zM17 11l-3 1.2 3 .8zM10.5 17h3L12 19z"/></svg>';
+const wolf=()=>`<span class="wf"><img src="cards/loup.png" alt="" onload="this.parentNode.classList.add('ok')" onerror="this.remove()">${WSVG}</span>`;
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
