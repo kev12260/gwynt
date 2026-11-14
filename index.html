@@ -156,6 +156,19 @@ button.btn.s{background:linear-gradient(#4a3520,#2a1b0d);border-color:#7a5a2e}
 .card.hc.drw .pc{animation:drw 1.3s ease-out}
 @keyframes drw{0%{transform:translateY(-34px) scale(.6);opacity:0}50%{opacity:1;box-shadow:0 0 22px #6fd0ff}100%{transform:none}}
 }
+.dbg{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:10px 0}
+.dbx{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:.35em;aspect-ratio:3/4;padding:.5em .5em .7em;border:2px solid #d9a441;border-radius:8px;cursor:pointer;color:#f3e6c4;font:inherit;text-align:center;overflow:hidden;background:repeating-linear-gradient(120deg,#ffffff08 0 3px,#0000 3px 7px),linear-gradient(165deg,var(--c1),var(--c2) 75%);box-shadow:inset 0 0 0 2px #0008,inset 0 0 22px #000a,6px 8px 0 -2px #000a,0 10px 18px #000a}
+.dbx::before{content:"";position:absolute;left:0;right:0;top:0;height:27%;background:linear-gradient(#ffffff26,#00000055);border-bottom:2px solid #d9a441;box-shadow:0 3px 6px #0008}
+.dbx::after{content:"";position:absolute;left:34%;right:34%;top:10%;height:.4em;border-radius:3px;background:#000a;box-shadow:0 0 0 1px #d9a44188}
+.dbx .plt{position:relative;z-index:1;width:54%;aspect-ratio:1;display:grid;place-items:center;margin-bottom:.1em;border:2px solid #d9a441;border-radius:10px;background:radial-gradient(#0007,#000d);box-shadow:0 0 0 2px #0009,0 0 14px #d9a44144}
+.dbx .plt svg{width:68%;height:68%;filter:drop-shadow(0 0 4px #d9a44188)}
+.dbx .bnm{position:relative;z-index:1;font-variant:small-caps;letter-spacing:.1em;font-weight:700;font-size:.95rem;color:#f3d890;text-shadow:0 1px 2px #000}
+.dbx .bst{position:relative;z-index:1;font-size:.68rem;color:#e8dcc0cc;line-height:1.2}
+.dbx.lk{filter:grayscale(.9) brightness(.6);cursor:default}
+.dsk{position:sticky;top:0;z-index:10;margin:0 -2px 8px;padding:8px;background:#140d07;border-bottom:1px solid #6b4f2a;font-size:.85rem;text-align:left}
+.dci .pc{margin:0}.dci.off .pc{opacity:.5}
+.dct{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:5px;font-size:.85rem}.dct .btn{padding:2px 10px}
+@media (prefers-reduced-motion:no-preference){.dbx{transition:transform .15s}.dbx:hover:not(:disabled){transform:translateY(-4px)}}
 </style></head><body><main>
 <button class="btn s" id="mu" style="float:right;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
@@ -258,9 +271,9 @@ const av=c=>SV.col[c.n]||0;
 const cur=f=>SV.dk&&SV.dk[f]||Object.fromEntries(uc(f).map(c=>[c.n,isSp(c)?Math.min(av(c),1):av(c)]));
 const stat=(f,d=cur(f))=>{let u=0,s=0;uc(f).forEach(c=>{const k=d[c.n]||0;isSp(c)?s+=k:u+=k});return{u,s,ok:u>=22&&s<=10}};
 const myDeck=f=>{const d=cur(f);return uc(f).flatMap(c=>Array.from({length:d[c.n]||0},()=>c))};
-function decks(){$('app').innerHTML='<p>Mes decks — choisis une faction :</p>'+Object.keys(FA).map(k=>{const sv=SV.dk&&SV.dk[k],s=stat(k);return `<button class="card fac" data-k="${k}"><span><b>${FA[k].n}</b></span><i>${!SV.ul[k]?'Faction verrouillée':s.ok?'Deck valide':'Deck incomplet'}</i></button>`}).join('')+'<button class="btn s" id="bk">Retour</button>';
+function decksOld(){$('app').innerHTML='<p>Mes decks — choisis une faction :</p>'+Object.keys(FA).map(k=>{const sv=SV.dk&&SV.dk[k],s=stat(k);return `<button class="card fac" data-k="${k}"><span><b>${FA[k].n}</b></span><i>${!SV.ul[k]?'Faction verrouillée':s.ok?'Deck valide':'Deck incomplet'}</i></button>`}).join('')+'<button class="btn s" id="bk">Retour</button>';
  document.querySelectorAll('.fac').forEach(b=>b.onclick=()=>bld(b.dataset.k));$('bk').onclick=home}
-function bld(f){const d=cur(f),s=stat(f,d);
+function bldOld(f){const d=cur(f),s=stat(f,d);
  $('app').innerHTML=`<p><b>${FA[f].n}</b> — unités ${s.u} (min 22), spéciales ${s.s} (max 10) · <span style="color:${s.ok?'#6c6':'#d66'}">${s.ok?'deck valide':'deck invalide : faction injouable tant qu’il n’est pas complet'}</span></p>`+uc(f).sort((a,b)=>RAR(b)-RAR(a)||a.n.localeCompare(b.n)).map(c=>{const k=d[c.n]||0,m=av(c);return `<div class="dr rr${RAR(c)}"><span>${c.n} · ${isSp(c)?'spéciale':c.p+' '+RN[c.r]} · ${RL[RAR(c)]}</span><span><button class="btn s" data-n="${c.n}" data-v="-1" ${k?'':'disabled'}>−</button> ${k}/${m} <button class="btn s" data-n="${c.n}" data-v="1" ${k<m?'':'disabled'}>+</button></span></div>`}).join('')+`<p><button class="btn s" id="rs">Réinitialiser</button> <button class="btn" id="bk">Retour</button></p>`;
  document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const n=b.dataset.n,x=cur(f);x[n]=(x[n]||0)+ +b.dataset.v;SV.dk=SV.dk||{};SV.dk[f]=x;save();bld(f)});
  $('rs').onclick=()=>{if(SV.dk)delete SV.dk[f];save();bld(f)};$('bk').onclick=decks}
@@ -358,6 +371,14 @@ const FLV={'Geralt de Riv':'« Le monde n’a pas besoin de héros, seulement de
 function pc(c,o={}){const rr=RAR(c),sp=c.w!==undefined||c.hn,t=sp?(c.hn?'Spéciale · Cor':'Spéciale · Météo'):(c.h?'Héros · ':'')+RN[c.r];
  return `<div class="gw"><div class="pc rr${rr}${o.cls?' '+o.cls:''}" data-f="${cfac(c)}" style="${o.st||''}" data-z="${c.n}"><div class="gi"><div class="ga"><span class="pe">${ART(c)}</span><img src="cards/${slug(c.n)}.png" alt="" onload="this.parentNode.classList.add('hasimg')" onerror="this.remove()"></div><div class="gcol"><div class="gpw${sp?' x':''}${o.v<c.p?' dn':o.v>c.p?' up':''}"><span>${sp?'':o.v!==undefined?o.v:c.p}</span></div><div class="grm">${ROWIC(c)}</div><div class="gem0">✦</div></div><div class="gg"></div>${c.a==='spy'?'<div class="gsp">'+MASK+'</div>':''}<div class="gban">${c.n}</div>${o.n>1?'<div class="cnt">×'+o.n+'</div>':''}<div class="gtx"><b>${t} · ${RL[rr]}</b>${abil(c)}${FLV[c.n]?'<i>'+FLV[c.n]+'</i>':''}</div></div></div></div>`}
 const MASK='<svg viewBox="0 0 24 24"><path fill="#d9a441" d="M2 8c3-2 7-2.5 10-1 3-1.5 7-1 10 1-.5 6-4 10-7.5 10-1.8 0-2.5-1-2.5-1s-.7 1-2.5 1C6 18 2.5 14 2 8z"/><path fill="#140d07" d="M5.5 10.5c1.7-.8 3.7-.6 5 .8-1.2 1.6-3.4 2-5 1zM18.5 10.5c-1.7-.8-3.7-.6-5 .8 1.2 1.6 3.4 2 5 1z"/></svg>';
+const EM={nr:'<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M3 18l1.5-9 4.5 4 3-8 3 8 4.5-4L21 18z"/><rect x="3" y="19" width="18" height="2.2" rx=".6"/></svg>',ni:'<svg viewBox="0 0 24 24" fill="none" stroke="#d9a441" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" fill="#d9a441"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>',mo:'<svg viewBox="0 0 24 24" fill="none" stroke="#d9a441" stroke-width="2.4" stroke-linecap="round"><path d="M6 3c4 5 4 12 2 18M12 2c4 6 4 13 2 20M18 3c3 5 3 12 1 18"/></svg>',sc:'<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M4 20C4 10 10 4 21 3c0 11-6 17-17 17z"/><path d="M4 20L15 9" stroke="#140d07" stroke-width="1.2" fill="none"/></svg>',sk:'<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M12 2v14H5z"/><path d="M13.5 5l6 11h-6z"/><path d="M3 18h18l-2.5 3.5h-13z"/></svg>'};
+const DC={nr:['#2f63a8','#0e1d36'],ni:['#8a6d1c','#241b05'],mo:['#a02b22','#2a0907'],sc:['#33853a','#0b2410'],sk:['#2b8d98','#0a2a2f']};
+function decks(){$('app').innerHTML='<p>Mes decks — choisis une faction :</p><div class="dbg">'+Object.keys(FA).map(k=>{const ul=SV.ul[k],s=stat(k);return `<button class="dbx${ul?'':' lk'}" data-k="${k}" ${ul?'':'disabled'} style="--c1:${DC[k][0]};--c2:${DC[k][1]}"><div class="plt">${EM[k]}</div><div class="bnm">${FA[k].n}</div><div class="bst">${!ul?'🔒 Verrouillée':s.ok?'✔ '+s.u+' unités · '+s.s+' spéciales':'⚠ Incomplet · '+s.u+'/22 unités'}</div></button>`}).join('')+'</div><p><button class="btn s" id="bk">Retour</button></p>';
+ document.querySelectorAll('.dbx').forEach(b=>b.onclick=()=>bld(b.dataset.k));$('bk').onclick=home}
+function bld(f){const d=cur(f),s=stat(f,d),L=uc(f).filter(c=>av(c)>0).sort((a,b)=>RAR(b)-RAR(a)||a.n.localeCompare(b.n));
+ $('app').innerHTML=`<div class="dsk"><b>${FA[f].n}</b> — unités ${s.u} (min 22), spéciales ${s.s} (max 10) · <span style="color:${s.ok?'#6c6':'#e77'}">${s.ok?'deck valide':'deck incomplet : faction injouable tant qu’il n’est pas complet'}</span></div><p style="text-align:left">Seules les cartes que tu possèdes sont affichées. Touche une carte pour la voir en grand.</p>${L.length?'':'<p>Aucune carte possédée pour cette faction.</p>'}<div class="grid">${L.map(c=>{const k=d[c.n]||0,m=av(c);return `<div class="dci${k?'':' off'}">${pc(c,{cls:'tl'})}<div class="dct"><button class="btn s" data-n="${c.n}" data-v="-1" ${k?'':'disabled'}>−</button><span>${k}/${m}</span><button class="btn s" data-n="${c.n}" data-v="1" ${k<m?'':'disabled'}>+</button></div></div>`}).join('')}</div><p><button class="btn s" id="rs">Réinitialiser</button> <button class="btn" id="bk">Retour</button></p>`;
+ document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const n=b.dataset.n,x=cur(f),y=scrollY;x[n]=(x[n]||0)+ +b.dataset.v;SV.dk=SV.dk||{};SV.dk[f]=x;save();bld(f);scrollTo(0,y)});
+ $('rs').onclick=()=>{if(SV.dk)delete SV.dk[f];save();bld(f)};$('bk').onclick=decks}
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
