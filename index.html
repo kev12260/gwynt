@@ -145,6 +145,17 @@ button.btn.s{background:linear-gradient(#4a3520,#2a1b0d);border-color:#7a5a2e}
 .cf.b{transform:rotateY(180deg);background:radial-gradient(circle at 35% 30%,#c9d2d8,#7a8791 70%,#3c444b)}
 @keyframes flip{from{transform:rotateY(0deg)}}
 @media (prefers-reduced-motion:no-preference){.bw.pop{animation:pop .55s cubic-bezier(.2,1.4,.4,1)}.coin{animation:flip 1.6s cubic-bezier(.2,.6,.3,1)}}
+.gsp{position:absolute;z-index:5;right:.6em;bottom:calc(32% + .5em);width:2.2em;height:2.2em;border-radius:50%;display:grid;place-items:center;background:radial-gradient(#3a2916,#140d07);border:.12em solid #d9a441;box-shadow:0 0 .6em #000a}.gsp svg{width:1.45em;height:1.45em}
+.pc.sm .gsp,.pc.tl .gsp{bottom:calc(16% + .4em)}.pc.bd .gsp{right:.2em;bottom:calc(18% + .2em);width:1.9em;height:1.9em}
+@media (prefers-reduced-motion:no-preference){
+.bw.smoke{position:relative}.bw.smoke .pc{animation:appear 1s}
+.bw.smoke::before,.bw.smoke::after{content:"";position:absolute;left:50%;top:50%;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;z-index:9;pointer-events:none;filter:blur(2px);background:radial-gradient(circle,#ddd9d1aa 0,#9a968e66 45%,#0000 70%);animation:smoke 1.4s ease-out forwards}
+.bw.smoke::after{width:70px;height:70px;margin:-35px 0 0 -35px;background:radial-gradient(circle,#c9c5bdaa 0,#8a867e55 50%,#0000 72%);animation-delay:.2s;animation-fill-mode:both}
+@keyframes smoke{0%{transform:scale(.2);opacity:.95}60%{opacity:.8}100%{transform:translateY(-28px) scale(1.8);opacity:0}}
+@keyframes appear{0%{opacity:0;filter:blur(6px) brightness(.5)}60%{opacity:.35}100%{opacity:1;filter:none}}
+.card.hc.drw .pc{animation:drw 1.3s ease-out}
+@keyframes drw{0%{transform:translateY(-34px) scale(.6);opacity:0}50%{opacity:1;box-shadow:0 0 22px #6fd0ff}100%{transform:none}}
+}
 </style></head><body><main>
 <button class="btn s" id="mu" style="float:right;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
@@ -193,7 +204,7 @@ function nwx(c){return c.w===-1?[0,0,0]:S.wx.map((v,i)=>i===c.w?1:v)}
 function play(p,i,row){const c=S.h[p].splice(i,1)[0];S.sel=null;snd(c.w!==undefined?'weather':c.hn?'horn':c.a==='spy'?'spy':c.h?'hero':'card');
  if(c.w!==undefined){S.wx=nwx(c);S.wf=c.w===-1?[0,1,2]:[c.w]}
  else if(c.hn){S.hn[p][row]=1;S.hf={p,r:row}}
- else{const tg=c.a==='spy'?1-p:p;S.b[tg][c.r].push(c);S.fx={p:tg,r:c.r,k:S.b[tg][c.r].length-1};if(c.a==='spy')S.h[p].push(...S.d[p].splice(0,2))}
+ else{const tg=c.a==='spy'?1-p:p;S.b[tg][c.r].push(c);S.fx={p:tg,r:c.r,k:S.b[tg][c.r].length-1,s:c.a==='spy'?1:0};if(c.a==='spy'){const dd=S.d[p].splice(0,2);S.h[p].push(...dd);S.dr={p,n:dd.length}}}
  S.msg=(p?'L’adversaire joue : ':'Tu joues : ')+c.n+(c.hn?' ('+RN[row]+')':'')+(c.a==='spy'?' (espion, +2 cartes)':'')+'.';turn(p)}
 function pass(p){snd('pass');S.ps[p]=1;S.msg=p?'L’adversaire passe.':'Tu passes.';turn(p)}
 function turn(p){
@@ -336,7 +347,7 @@ const ART=c=>c.w!==undefined?(c.w<0?'☀️':['❄️','🌫️','🌧️'][c.w]
 const abil=c=>c.w!==undefined?(c.w<0?'Annule tous les effets météo.':'Réduit à 1 la puissance des unités de la rangée '+RN[c.w].toLowerCase()+' (sauf héros).'):c.hn?'Double la puissance des unités d’une rangée (sauf héros).':[c.h?'Héros : ignore la météo.':'',c.a==='spy'?'Espion : se pose chez l’adversaire, tu pioches 2 cartes.':'',c.a==='bond'?'Lien étroit : les cartes identiques de la rangée se multiplient.':''].filter(Boolean).join(' ')||'Unité simple.';
 function pcOld(c,o={}){const rr=RAR(c),p=c.w!==undefined||c.hn?'':c.p;return `<div class="pc rr${rr}${o.cls?' '+o.cls:''}" style="--fc:${fcol(c)}${o.st?';'+o.st:''}" data-z="${c.n}"><div class="pn">${c.n}</div><div class="pa"><span class="pe">${ART(c)}</span><img src="cards/${slug(c.n)}.png" alt="" onerror="this.remove()"></div><div class="pp">${p}</div><div class="pr"></div><div class="pt">${c.r!==undefined?RN[c.r]+' · ':''}${RL[rr]}${o.n>1?' ×'+o.n:''}</div><div class="px">${abil(c)}</div></div>`}
 const tile=(c,n,nw,dl,rv)=>pc(c,{n,cls:'tl'+(nw?' nw':'')+(rv?' rv':''),st:'--s:12px'+(dl!==undefined?';animation-delay:'+dl+'s':'')});
-const HB=(c,i,me)=>`<button class="card hc${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}>${pc(c,{cls:'sm',st:'--s:10px'})}</button>`;
+const HB=(c,i,me)=>`<button class="card hc${S.sel===i?' on':''}${S.dr&&S.dr.p===0&&i>=S.h[0].length-S.dr.n?' drw':''}" data-i="${i}" ${me?'':'disabled'}>${pc(c,{cls:'sm',st:'--s:10px'})}</button>`;
 function zoom(n){const c=[...CAT,...SV.cc].find(x=>x.n===n);if(!c)return;const z=document.createElement('div');z.className='zm';z.innerHTML=`<div class="zc">${pc(c,{cls:'lg'})}<p>Illustration : cards/${slug(c.n)}.png · ${cfac(c)==='neu'||!FA[cfac(c)]?'Neutre':FA[cfac(c)].n}</p></div>`;z.onclick=()=>z.remove();document.body.appendChild(z)}
 let LP=0,LT=0;
 document.addEventListener('pointerdown',e=>{const t=e.target.closest('.card.hc[data-i],.chip[data-z],.pc.tl[data-z],.pc.bd[data-z]');if(!t)return;const n=t.dataset.z||(S&&S.h&&S.h[0][+t.dataset.i]&&S.h[0][+t.dataset.i].n);if(!n)return;clearTimeout(LT);LT=setTimeout(()=>{LP=1;zoom(n)},450)});
@@ -345,7 +356,8 @@ document.addEventListener('click',e=>{if(LP){LP=0;return}const t=e.target.closes
 const ROWIC=c=>c.w!==undefined?'☁':c.hn?'♪':['<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M12 1.5l2.4 3.2V15h-4.8V4.7z"/><path d="M12 3v11" stroke="#140d07" stroke-width=".7"/><rect x="5.5" y="14.6" width="13" height="2.1" rx="1"/><rect x="10.9" y="16.7" width="2.2" height="4"/><circle cx="12" cy="21.6" r="1.4"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="#d9a441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3c9 3 9 15 0 18M8 3v18M8 12h12M17 9l3 3-3 3"/></svg>','<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M3 21V8h4v3h2V8h4v3h2V8h4v13z"/></svg>'][c.r];
 const FLV={'Geralt de Riv':'« Le monde n’a pas besoin de héros, seulement de quelqu’un qui finit le travail. »'};
 function pc(c,o={}){const rr=RAR(c),sp=c.w!==undefined||c.hn,t=sp?(c.hn?'Spéciale · Cor':'Spéciale · Météo'):(c.h?'Héros · ':'')+RN[c.r];
- return `<div class="gw"><div class="pc rr${rr}${o.cls?' '+o.cls:''}" data-f="${cfac(c)}" style="${o.st||''}" data-z="${c.n}"><div class="gi"><div class="ga"><span class="pe">${ART(c)}</span><img src="cards/${slug(c.n)}.png" alt="" onload="this.parentNode.classList.add('hasimg')" onerror="this.remove()"></div><div class="gcol"><div class="gpw${sp?' x':''}${o.v<c.p?' dn':o.v>c.p?' up':''}"><span>${sp?'':o.v!==undefined?o.v:c.p}</span></div><div class="grm">${ROWIC(c)}</div><div class="gem0">✦</div></div><div class="gg"></div><div class="gban">${c.n}</div>${o.n>1?'<div class="cnt">×'+o.n+'</div>':''}<div class="gtx"><b>${t} · ${RL[rr]}</b>${abil(c)}${FLV[c.n]?'<i>'+FLV[c.n]+'</i>':''}</div></div></div></div>`}
+ return `<div class="gw"><div class="pc rr${rr}${o.cls?' '+o.cls:''}" data-f="${cfac(c)}" style="${o.st||''}" data-z="${c.n}"><div class="gi"><div class="ga"><span class="pe">${ART(c)}</span><img src="cards/${slug(c.n)}.png" alt="" onload="this.parentNode.classList.add('hasimg')" onerror="this.remove()"></div><div class="gcol"><div class="gpw${sp?' x':''}${o.v<c.p?' dn':o.v>c.p?' up':''}"><span>${sp?'':o.v!==undefined?o.v:c.p}</span></div><div class="grm">${ROWIC(c)}</div><div class="gem0">✦</div></div><div class="gg"></div>${c.a==='spy'?'<div class="gsp">'+MASK+'</div>':''}<div class="gban">${c.n}</div>${o.n>1?'<div class="cnt">×'+o.n+'</div>':''}<div class="gtx"><b>${t} · ${RL[rr]}</b>${abil(c)}${FLV[c.n]?'<i>'+FLV[c.n]+'</i>':''}</div></div></div></div>`}
+const MASK='<svg viewBox="0 0 24 24"><path fill="#d9a441" d="M2 8c3-2 7-2.5 10-1 3-1.5 7-1 10 1-.5 6-4 10-7.5 10-1.8 0-2.5-1-2.5-1s-.7 1-2.5 1C6 18 2.5 14 2 8z"/><path fill="#140d07" d="M5.5 10.5c1.7-.8 3.7-.6 5 .8-1.2 1.6-3.4 2-5 1zM18.5 10.5c-1.7-.8-3.7-.6-5 .8 1.2 1.6 3.4 2 5 1z"/></svg>';
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
@@ -361,9 +373,9 @@ function ai(){if(S.over||S.lock||S.t!==1)return;
  const pick=op?o.find(x=>d+x.g>0):o[0];
  if(!pick)return pass(1);play(1,pick.i,pick.c.hn?bestHorn()[0]:undefined)}
 function rowH(p,r){const fx=S.wx[r];
- return `<div class="row${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<div class="bw${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}">${pc(c,{cls:'bd',v:rv(p,r)[k]})}</div>`).join('')}<span style="display:none">${[].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}" data-z="${c.n}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
+ return `<div class="row${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<div class="bw${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop'+(S.fx.s?' smoke':''):''}">${pc(c,{cls:'bd',v:rv(p,r)[k]})}</div>`).join('')}<span style="display:none">${[].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}" data-z="${c.n}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
 function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
-function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T1=tot(1),bp=[S.pt&&S.pt[0]!==T0?' bump':'',S.pt&&S.pt[1]!==T1?' bump':''];S.pt=[T0,T1];setTimeout(()=>{S.fx=S.wf=S.hf=null},0);
+function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T1=tot(1),bp=[S.pt&&S.pt[0]!==T0?' bump':'',S.pt&&S.pt[1]!==T1?' bump':''];S.pt=[T0,T1];setTimeout(()=>{S.fx=S.wf=S.hf=S.dr=null},0);
  document.getElementById('app').innerHTML=
  `<div class="bar${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot${bp[1]}">${tot(1)}</span></div>`+
  [2,1,0].map(r=>rowH(1,r)).join('')+
