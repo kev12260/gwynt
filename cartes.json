@@ -8,7 +8,7 @@
   "cu": 1,
   "bo": 1,
   "rr": 3,
-  "ty": "ev"
+  "ty": "base"
   "q": "Sur mon trône"
  },
  {
@@ -20,7 +20,7 @@
   "cu": 1,
   "bo": 1,
   "rr": 3,
-  "ty": "ev"
+  "ty": "base"
   "q": "Je dis ça, je dis tout"
  }
 ]
