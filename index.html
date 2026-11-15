@@ -221,30 +221,55 @@ h1{padding:0 3rem 0 calc(3rem + .18em)}h1 small{padding-left:.35em}
 @media (orientation:landscape) and (max-height:540px){
  body:has(.gm) h1,body:has(.gm) #mu{display:none}
  body:has(.gm) main{max-width:none;margin:0;padding:4px max(6px,env(safe-area-inset-right)) 4px max(6px,env(safe-area-inset-left));border-width:0;border-radius:0;box-shadow:none}
- .gm{display:grid;grid-template-columns:136px minmax(0,1fr) 218px;grid-template-rows:repeat(3,minmax(0,1fr)) 20px repeat(3,minmax(0,1fr));gap:4px;padding:4px;height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 14px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 14px)}
- .gm .bar{margin:0;font-size:.7rem;padding:4px 6px;flex-wrap:wrap;align-content:flex-start;gap:4px}
- .gm .bar .tot{width:34px;height:34px;font-size:1rem}
- .stk{display:block}
+ .gm{display:grid;grid-template-columns:164px minmax(0,1fr) 206px;grid-template-rows:repeat(3,minmax(0,1fr)) 22px repeat(3,minmax(0,1fr));gap:4px;padding:4px;height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 14px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 14px)}
+ .gm .bar{margin:0;padding:5px 6px;font-size:.68rem;line-height:1.25;align-items:flex-start;gap:4px;overflow:hidden}
+ .gm .bi{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+ .gm .bi>span,.gm .bi>b{display:block;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .gm .bi>span::before{content:none!important}
+ .gm .bi>.bl{white-space:normal;color:#d9b8ff}.gm .bs:empty{display:none}.gm .bs{color:#ff9f8f}
+ .gm .bn{font-size:.8rem;color:#f3d890}
+ .gm .bar .tot{flex:none;width:40px;height:40px;font-size:1.15rem}
+ .stk{display:block;white-space:normal}
  .gm .ob{grid-column:1;grid-row:1/3}
- .gm .ocl{grid-column:1;grid-row:3;width:auto;margin:0;font-size:.62rem;padding:3px 6px}
+ .gm .ocl{grid-column:1;grid-row:3;width:auto;margin:0;font-size:.6rem;padding:3px 6px;gap:0}
  .gm .ro{grid-column:2;margin:0}.gm .ro.r2{grid-row:1}.gm .ro.r1{grid-row:2}.gm .ro.r0{grid-row:3}
- .gm .wxb{grid-column:2;grid-row:4;margin:0;padding:0;font-size:.62rem;line-height:20px}
+ .gm .wxb{grid-column:2;grid-row:4;margin:0;padding:0 8px;font-size:.62rem;line-height:22px;display:flex;gap:10px;white-space:nowrap;overflow:hidden}
+ .gm .wm{display:block;margin-left:auto;color:#f3d890;overflow:hidden;text-overflow:ellipsis}
  .gm .rp{grid-column:2;margin:0}.gm .rp.r0{grid-row:5}.gm .rp.r1{grid-row:6}.gm .rp.r2{grid-row:7}
  .gm .pb{grid-column:1;grid-row:5/7}
- .gm .act{grid-column:1;grid-row:7;margin:0;flex-direction:column;align-items:stretch;gap:2px}
- .gm .act #msg{font-size:.62rem;line-height:1.2}.gm .act .btn{padding:6px}
+ .gm .act{grid-column:1;grid-row:7;margin:0;flex-direction:column;align-items:stretch;justify-content:center;gap:3px}
+ .gm .act #msg{display:none}.gm .act .btn{padding:8px 6px}
  .gm .hand{grid-column:3;grid-row:1/8;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;overflow-y:auto;align-content:start;margin:0;padding:6px;border:0;border-radius:4px}
  .gm .hand .card.lc{grid-column:1/-1;flex:none!important;width:100%!important;height:auto;aspect-ratio:auto;padding:4px 8px;font-size:.7rem}
  .gm .hand .card.hc{width:100%;flex:none}
- .gm .row{min-height:0;height:100%;padding:2px 6px;gap:6px;overflow:hidden}
- .gm .row .rn{display:none}.gm .row .rs{width:26px;height:26px;font-size:.8rem}
+ .gm .row{min-height:0;height:100%;padding:2px 6px;gap:5px;overflow:hidden}
+ .gm .row .rs{width:26px;height:26px;font-size:.8rem}
+ .gm .row .rn{display:block;width:14px;font-size:0;text-align:center}
+ .gm .row .rn::before{font-size:.8rem;color:var(--mut)}
+ .gm .row.r0 .rn::before{content:'\2694\fe0e'}.gm .row.r1 .rn::before{content:'\1F3F9'}.gm .row.r2 .rn::before{content:'\1F3F0'}
+ .gm .hnb{display:inline-block;font-size:.6rem;color:#111;background:var(--or);border-radius:3px;padding:0 3px}
  .gm .cs{flex-wrap:nowrap;overflow:hidden;gap:3px}
  .gm .bw{width:32px}
  .gm .pc.bd .gban{display:none}.gm .pc.bd .gpw{transform:scale(1.45);transform-origin:top left}
+ .mgb{width:min(17vw,112px)}.mgt{font-size:1rem}.mgr{padding:12px 6px 16px}.zm.mg{padding:6px}
 }
 .cnt.mx{background:#a8331f}
 .gbn{position:absolute;z-index:5;left:.6em;bottom:calc(32% + .5em);width:2.2em;height:2.2em;border-radius:50%;display:grid;place-items:center;background:radial-gradient(#3a2916,#140d07);border:.12em solid #d9a441;box-shadow:0 0 .6em #000a}.gbn svg{width:1.4em;height:1.4em}
 .pc.sm .gbn,.pc.tl .gbn{bottom:calc(16% + .4em)}.pc.bd .gbn{left:.2em;bottom:calc(18% + .2em);width:1.9em;height:1.9em}
+/* barres d'information et remplacement des cartes */
+.bi{display:block}.bi>span,.bi>b{margin-right:.45em}.bi>.bc::before,.bi>.bl::before,.bi>.bs:not(:empty)::before{content:'· '}
+.wm,.hnb{display:none}
+.zm.mg{background:#050403f2}
+.mgw{display:flex;flex-direction:column;justify-content:center;gap:8px;width:100%;max-width:1000px;margin:0 auto;text-align:center}
+.mgt{font-size:1.15rem;font-variant:small-caps;letter-spacing:.1em;color:#f3d890;margin:0}.mgt span{color:var(--mut)}
+.mgs{font-size:.85rem;color:var(--ag);margin:0;min-height:1.3em}
+.mgr{display:flex;gap:12px;overflow-x:auto;padding:16px 8px 22px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.mgb{flex:none;width:min(40vw,150px);position:relative;background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer;scroll-snap-align:center;transition:transform .15s}
+.mgb.on{transform:translateY(-12px) scale(1.06)}.mgb.on .pc{outline:3px solid #ff6b57;box-shadow:0 0 22px #ff6b5788}
+.mgb.nw .pc{outline:3px solid #6fd0ff;box-shadow:0 0 18px #6fd0ff88}
+.mgb em{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:#a8331f;color:#fff;font-style:normal;font-size:.68rem;padding:1px 8px;border-radius:10px;white-space:nowrap;z-index:3}.mgb em.g{background:#1f6d94}
+.mga{margin-top:6px}
+.pc.mg{font-size:calc(100cqw/11)}.pc.mg .gtx{display:none}.pc.mg .ga{bottom:16%}.pc.mg .gban{bottom:.5em;font-size:.95em;clip-path:none;border-radius:.3em}.pc.mg .gsp,.pc.mg .gbn{bottom:calc(16% + .4em)}
 </style></head><body><main>
 <button class="btn s" id="mu" style="position:absolute;top:10px;right:10px;z-index:5;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
@@ -283,8 +308,16 @@ function rst(w){[0,1].forEach(p=>{const all=S.b[p].flat();S.gy[p].push(...all);S
  if(S.f[p]==='nr'&&w===p)S.h[p].push(...S.d[p].splice(0,1))})}
 function sk(){[0,1].forEach(p=>{if(S.f[p]==='sk'&&S.r===3)for(let i=0;i<2&&S.gy[p].length;i++){const k=S.gy[p].splice(Math.random()*S.gy[p].length|0,1)[0];S.b[p][k.r].push(k)}})}
 function init(f0,li,o){const f1=o.f,d0=shuf([...myDeck(f0),...(o.cust?(o.test?[o.test,o.test,o.test]:SV.cc.filter(c=>c.f===f0||c.f==='neu')):[])]),d1=shuf(o.deck());
- S={o,li,f:[f0,f1],gy:[[],[]],ld:[1,o.li<0?0:1],L:[FA[f0].ls[li],o.li<0?{n:'aucun',k:'none',e:''}:FA[f1].ls[o.li]],h:[d0.slice(0,10),d1.slice(0,10)],d:[d0.slice(10),d1.slice(10)],b:[[[],[],[]],[[],[],[]]],hn:[[0,0,0],[0,0,0]],wx:[0,0,0],g:[2,2],ps:[0,0],t:0,r:1,over:0,lock:0,mul:2,sel:null,msg:'Remplace jusqu’à 2 cartes (clique dessus), puis garde ta main.'};render()}
-function swap(i){const c=S.h[0].splice(i,1,S.d[0].shift())[0];S.d[0].push(c);S.mul--;S.msg=S.mul?'Encore 1 remplacement possible.':'Remplacements terminés. À toi de jouer.';S.mul?render():begin()}
+ S={o,li,f:[f0,f1],gy:[[],[]],ld:[1,o.li<0?0:1],L:[FA[f0].ls[li],o.li<0?{n:'aucun',k:'none',e:''}:FA[f1].ls[o.li]],h:[d0.slice(0,10),d1.slice(0,10)],d:[d0.slice(10),d1.slice(10)],b:[[[],[],[]],[[],[],[]]],hn:[[0,0,0],[0,0,0]],wx:[0,0,0],g:[2,2],ps:[0,0],t:0,r:1,over:0,lock:0,mul:2,sel:null,ms:null,mn:null,msg:'Remplace 2 cartes de ta main.'};render();mullig()}
+function swap(i){const c=S.h[0].splice(i,1,S.d[0].shift())[0];S.d[0].push(c);S.mul--;S.ms=null;S.mn=i;snd('card');
+ if(S.mul>0){S.msg='Choisis une dernière carte à remplacer.';render();mullig()}
+ else{S.msg='Ta main est prête.';render();mullig(1);setTimeout(()=>{const o=document.getElementById('mgv');if(o)o.remove();S.mn=null;begin()},1700)}}
+function mullig(done){let z=document.getElementById('mgv');if(!z){z=document.createElement('div');z.id='mgv';z.className='zm mg';document.body.appendChild(z)}
+ const H=S.h[0],st=3-S.mul,old=z.querySelector&&z.querySelector('.mgr'),sl=old?old.scrollLeft:0,nm=S.ms!=null&&H[S.ms]?H[S.ms].n:'';
+ z.innerHTML=`<div class="mgw"><p class="mgt">${done?'Ta main est prête':'Remplace deux cartes'} <span>${done?'':'('+Math.min(st,2)+'/2)'}</span></p><p class="mgs">${done?'Voici ta main pour cette partie.':S.ms==null?'Touche la carte que tu veux jeter.':'Tu vas remplacer : <b>'+nm+'</b>'}</p><div class="mgr">${H.map((c,i)=>`<button class="mgb${S.ms===i?' on':''}${S.mn===i?' nw':''}" data-i="${i}" ${done?'disabled':''}>${pc(c,{cls:'mg'})}${S.ms===i?'<em>À jeter</em>':S.mn===i?'<em class="g">Nouvelle carte</em>':''}</button>`).join('')}</div>${done?'':`<div class="mga"><button class="btn" id="mgc" ${S.ms==null?'disabled':''}>Confirmer le remplacement</button></div>`}</div>`;
+ const nr=z.querySelector('.mgr');if(nr)nr.scrollLeft=sl;
+ z.querySelectorAll('.mgb').forEach(b=>b.onclick=()=>{if(LP){LP=0;return}if(done)return;const i=+b.dataset.i;S.ms=S.ms===i?null:i;mullig()});
+ const c=document.getElementById('mgc');if(c)c.onclick=()=>{if(S.ms!=null)swap(S.ms)}}
 const rv=(p,r,wx=S.wx)=>{const L=S.b[p][r];return L.map(c=>{let v=wx[r]&&!c.h?1:c.p;if(c.a==='bond')v*=L.filter(x=>x.a==='bond'&&(x.bg||x.n)===(c.bg||c.n)).length;if(S.hn[p][r]&&!c.h)v*=2;return v})};
 const rs=(p,r,wx=S.wx)=>rv(p,r,wx).reduce((s,v)=>s+v,0);
 const tot=(p,wx=S.wx)=>[0,1,2].reduce((s,r)=>s+rs(p,r,wx),0);
@@ -438,7 +471,7 @@ const tile=(c,n,nw,dl,rv)=>pc(c,{n:Math.min(n,cap(c)),mx:n>=cap(c),cls:'tl'+(nw?
 const HB=(c,i,me)=>`<button class="card hc${S.sel===i?' on':''}${S.dr&&S.dr.p===0&&i>=S.h[0].length-S.dr.n?' drw':''}" data-i="${i}" ${me?'':'disabled'}>${pc(c,{cls:'sm',st:'--s:10px'})}</button>`;
 function zoom(n){const c=[...CAT,...CC()].find(x=>x.n===n);if(!c)return;const z=document.createElement('div');z.className='zm';z.innerHTML=`<div class="zc">${pc(c,{cls:'lg'})}<p>Illustration : cards/${slug(c.n)}.png · ${cfac(c)==='neu'||!FA[cfac(c)]?'Neutre':FA[cfac(c)].n}</p></div>`;z.onclick=()=>z.remove();document.body.appendChild(z)}
 let LP=0,LT=0;
-document.addEventListener('pointerdown',e=>{const t=e.target.closest('.card.hc[data-i],.chip[data-z],.pc.tl[data-z],.pc.bd[data-z]');if(!t)return;const n=t.dataset.z||(S&&S.h&&S.h[0][+t.dataset.i]&&S.h[0][+t.dataset.i].n);if(!n)return;clearTimeout(LT);LT=setTimeout(()=>{LP=1;zoom(n)},450)});
+document.addEventListener('pointerdown',e=>{const t=e.target.closest('.card.hc[data-i],.chip[data-z],.pc.tl[data-z],.pc.bd[data-z],.pc.mg[data-z]');if(!t)return;const n=t.dataset.z||(S&&S.h&&S.h[0][+t.dataset.i]&&S.h[0][+t.dataset.i].n);if(!n)return;clearTimeout(LT);LT=setTimeout(()=>{LP=1;zoom(n)},450)});
 ['pointerup','pointerleave','pointercancel'].forEach(ev=>document.addEventListener(ev,()=>clearTimeout(LT)));
 document.addEventListener('click',e=>{if(LP){LP=0;return}const t=e.target.closest('.pc.tl[data-z],.pc.bd[data-z],.chip[data-z]');if(t)zoom(t.dataset.z)});
 const ROWIC=c=>c.w!==undefined?'☁':c.hn?'♪':['<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M12 1.5l2.4 3.2V15h-4.8V4.7z"/><path d="M12 3v11" stroke="#140d07" stroke-width=".7"/><rect x="5.5" y="14.6" width="13" height="2.1" rx="1"/><rect x="10.9" y="16.7" width="2.2" height="4"/><circle cx="12" cy="21.6" r="1.4"/></svg>','<svg viewBox="0 0 24 24" fill="none" stroke="#d9a441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3c9 3 9 15 0 18M8 3v18M8 12h12M17 9l3 3-3 3"/></svg>','<svg viewBox="0 0 24 24" fill="#d9a441"><path d="M3 21V8h4v3h2V8h4v3h2V8h4v13z"/></svg>'][c.r];
@@ -489,7 +522,7 @@ loadShared();
 function rules(){const S2=[
 ['But du jeu','Gagne <b>2 manches sur 3</b>. Chaque joueur a 2 gemmes ◆ : tu en perds une chaque fois que tu perds une manche.'],
 ['Déroulement d’une manche','À tour de rôle, tu <b>joues une carte</b> ou tu <b>passes</b>. Quand les deux joueurs ont passé, celui dont le total de puissance est le plus élevé gagne la manche. En cas d’égalité, chacun perd une gemme (sauf Nilfgaard, qui gagne les égalités). Le vainqueur d’une manche commence la suivante.'],
-['Début de partie','Tu reçois 10 cartes. Tu peux en remplacer jusqu’à 2, puis une pièce décide qui commence : 🐺 pour toi, ⚔️ pour l’adversaire. Scoia’tael commence toujours.'],
+['Début de partie','Tu reçois 10 cartes. Tu remplaces 2 cartes de ta main (tu choisis chaque carte, puis tu confirmes), puis une pièce décide qui commence : 🐺 pour toi, ⚔️ pour l’adversaire. Scoia’tael commence toujours.'],
 ['Les rangées','Chaque unité se pose dans sa rangée : mêlée, distance ou siège. Le total de la manche est la somme des trois rangées.'],
 ['La météo','<b>Gelée mordante</b> : mêlée à 1. <b>Brouillard épais</b> : distance à 1. <b>Pluie torrentielle</b> : siège à 1. <b>Temps clair</b> annule tout. Les héros ignorent la météo.'],
 ['Les capacités','<b>Héros</b> : ignore la météo et le cor. <b>Espion</b> : se pose dans le camp adverse et te fait piocher 2 cartes. <b>Lien étroit</b> : les cartes identiques d’une même rangée se multiplient. <b>Cor de commandement</b> : double la puissance d’une rangée (choisis ensuite la rangée), sauf les héros.'],
@@ -527,24 +560,24 @@ function ai(){if(S.over||S.lock||S.t!==1)return;
  const pick=op?o.find(x=>d+x.g>0):o[0];
  if(!pick)return pass(1);play(1,pick.i,pick.c.hn?bestHorn()[0]:undefined)}
 function rowH(p,r){const fx=S.wx[r];
- return `<div class="row ${p?'ro':'rp'} r${r}${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<div class="bw${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop'+(S.fx.s?' smoke':''):''}">${pc(c,{cls:'bd',v:rv(p,r)[k]})}</div>`).join('')}<span style="display:none">${[].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}" data-z="${c.n}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
+ return `<div class="row ${p?'ro':'rp'} r${r}${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span>${S.hn[p][r]?'<span class="hnb">♪×2</span>':''}<div class="cs">${S.b[p][r].map((c,k)=>`<div class="bw${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop'+(S.fx.s?' smoke':''):''}">${pc(c,{cls:'bd',v:rv(p,r)[k]})}</div>`).join('')}<span style="display:none">${[].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}" data-z="${c.n}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
 function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
 function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T1=tot(1),bp=[S.pt&&S.pt[0]!==T0?' bump':'',S.pt&&S.pt[1]!==T1?' bump':''];S.pt=[T0,T1];setTimeout(()=>{S.fx=S.wf=S.hf=S.dr=null},0);
  document.getElementById('app').innerHTML=
- `<div class="gm"><div class="bar ob${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}<small class="stk">pioche ${S.d[1].length} · cimetière ${S.gy[1].length}</small></span><span class="tot${bp[1]}">${tot(1)}</span></div>${oppLd()}`+
+ `<div class="gm"><div class="bar ob${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span class="bi"><b class="bn">${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n}</b><span class="bf">(${FA[S.f[1]].n})</span><span class="bg">${gems(1)}</span>${S.L[1].k==='none'?'':'<span class="bl">chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')</span>'}<span class="bc">${S.h[1].length} cartes</span><span class="bs">${S.ps[1]?'a passé':''}</span><small class="stk">pioche ${S.d[1].length} · cimetière ${S.gy[1].length}</small></small></span><span class="tot${bp[1]}">${tot(1)}</span></div>${oppLd()}`+
  [2,1,0].map(r=>rowH(1,r)).join('')+
- `<div class="wxb">${S.wx.some(v=>v)?'Météo : '+S.wx.map((v,i)=>v?['❄️ Gelée','🌫️ Brouillard','🌧️ Pluie'][i]+' ('+RN[i].toLowerCase()+')':'').filter(Boolean).join(' · '):'Terrain dégagé'}</div><div class="bar pb" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)} · ${S.h[0].length} carte${S.h[0].length>1?'s':''}${S.ps[0]?' · tu as passé':''}<small class="stk">pioche ${S.d[0].length} · cimetière ${S.gy[0].length}</small></span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
+ `<div class="wxb">${S.wx.some(v=>v)?'Météo : '+S.wx.map((v,i)=>v?['❄️ Gelée','🌫️ Brouillard','🌧️ Pluie'][i]+' ('+RN[i].toLowerCase()+')':'').filter(Boolean).join(' · '):'Terrain dégagé'}<span class="wm">${S.msg}</span></div><div class="bar pb" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span class="bi"><span class="br">Manche ${Math.min(S.r,3)}</span><b class="bn">Toi</b><span class="bf">(${FA[S.f[0]].n})</span><span class="bg">${gems(0)}</span><span class="bc">${S.h[0].length} carte${S.h[0].length>1?'s':''}</span><span class="bs">${S.ps[0]?'tu as passé':''}</span><small class="stk">pioche ${S.d[0].length} · cimetière ${S.gy[0].length}</small></small></span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
  [0,1,2].map(r=>rowH(0,r)).join('')+
  `<div class="hand">${ldCard()}${S.h[0].map((c,i)=>HB(c,i,me)).join('')}<span style="display:none">${[].map((c,i)=>c.hn?`<button class="card w${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}><b>♪</b><span>${c.n}</span><i>Double une rangée</i></button>`:c.w!==undefined
   ?`<button class="card w" data-i="${i}" ${me?'':'disabled'}><b>☁</b><span>${c.n}</span><i>${c.w<0?'Annule la météo':RN[c.w]+' à 1'}</i></button>`
   :`<button class="card${c.h?' h':''}" data-i="${i}" ${me?'':'disabled'}><b>${c.p}</b><span>${c.n}</span><i>${RN[c.r]}${c.h?' · héros':''}${c.a==='spy'?' · espion':c.a==='bond'?' · lien':''}</i></button>`).join('')}</div>`+
- `<div class="act"><button class="btn" id="pass" ${me?'':'disabled'}>${S.mul>0?'Garder la main':'Passer'}</button><span id="msg">${S.msg}</span>${S.nx?'<button class="btn" id="nx">Match suivant</button>':''}${S.over?'<button class="btn s" id="again">Menu principal</button>':''}</div></div>`;
+ `<div class="act"><button class="btn" id="pass" ${me&&S.mul<=0?'':'disabled'}>Passer</button><span id="msg">${S.msg}</span>${S.nx?'<button class="btn" id="nx">Match suivant</button>':''}${S.over?'<button class="btn s" id="again">Menu principal</button>':''}</div></div>`;
  document.querySelectorAll('.card').forEach(b=>b.onclick=()=>{if(LP){LP=0;return}if(!me)return;const i=+b.dataset.i;
- if(S.mul>0)return swap(i);
+ if(S.mul>0)return;
  if(S.h[0][i].hn){S.sel=i;S.msg='Choisis la rangée du cor.';return render()}
  play(0,i)});
  document.querySelectorAll('.row.pick').forEach(e=>e.onclick=()=>me&&S.sel!=null&&play(0,S.sel,+e.dataset.r));
- const p=document.getElementById('pass');if(p)p.onclick=()=>{if(!me)return;if(S.mul>0){S.mul=0;S.msg='À toi de jouer.';return begin()}pass(0)};
+ const p=document.getElementById('pass');if(p)p.onclick=()=>{if(!me||S.mul>0)return;pass(0)};
  const a=document.getElementById('again');if(a)a.onclick=home;const nx=$('nx');if(nx)nx.onclick=()=>init(S.f[0],S.li,tOpp(S.o.tr,S.o.step+1));const ldb=document.getElementById('lead');if(ldb)ldb.onclick=()=>me&&S.ld[0]&&S.mul<=0&&lead(0)}
 const mu=$('mu'),mi=()=>mu.textContent=SV.mute?'🔇':'🔊';mi();mu.onclick=()=>{SV.mute=!SV.mute;save();mi();theme();snd('card')};addEventListener('pointerdown',theme);document.addEventListener('visibilitychange',()=>{if(TH)document.hidden?TH.pause():theme()});
 home();
