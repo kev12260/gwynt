@@ -212,6 +212,36 @@ h1{padding:0 3rem 0 calc(3rem + .18em)}h1 small{padding-left:.35em}
 .pc.tl .gban,.pc.sm .gban,.pc.bd .gban{clip-path:none;border-radius:.3em}
 .pc.rr3:not(.lg)::after{animation:none;display:none}
 .grid>*{content-visibility:auto;contain-intrinsic-size:auto 160px}
+/* table de jeu */
+.gm{background:radial-gradient(ellipse at 50% 50%,#ffffff10,#0000 62%),repeating-linear-gradient(0deg,#0000 0 46px,#0008 46px 48px),repeating-linear-gradient(90deg,#0000 0 70px,#0007 70px 72px),linear-gradient(135deg,#34313a,#1d1c22);border:3px solid #5a4325;border-radius:8px;padding:6px;box-shadow:inset 0 0 50px #000d,0 4px 16px #000a}
+.gm .row{background:linear-gradient(#0c0a0899,#1b1410aa);border-color:#7a5a2e88;box-shadow:inset 0 2px 8px #000d}
+.gm .row::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:2.6rem;opacity:.07;pointer-events:none}
+.gm .row.r0::before{content:'⚔︎'}.gm .row.r1::before{content:'🏹'}.gm .row.r2::before{content:'🏰'}.gm .row.fx::before{content:'❄︎';opacity:.2}
+.stk{display:none;font-size:.62rem;color:var(--mut);line-height:1.3}
+@media (orientation:landscape) and (max-height:540px){
+ body:has(.gm) h1,body:has(.gm) #mu{display:none}
+ body:has(.gm) main{max-width:none;margin:0;padding:4px max(6px,env(safe-area-inset-right)) 4px max(6px,env(safe-area-inset-left));border-width:0;border-radius:0;box-shadow:none}
+ .gm{display:grid;grid-template-columns:136px minmax(0,1fr) 218px;grid-template-rows:repeat(3,minmax(0,1fr)) 20px repeat(3,minmax(0,1fr));gap:4px;padding:4px;height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 14px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 14px)}
+ .gm .bar{margin:0;font-size:.7rem;padding:4px 6px;flex-wrap:wrap;align-content:flex-start;gap:4px}
+ .gm .bar .tot{width:34px;height:34px;font-size:1rem}
+ .stk{display:block}
+ .gm .ob{grid-column:1;grid-row:1/3}
+ .gm .ocl{grid-column:1;grid-row:3;width:auto;margin:0;font-size:.62rem;padding:3px 6px}
+ .gm .ro{grid-column:2;margin:0}.gm .ro.r2{grid-row:1}.gm .ro.r1{grid-row:2}.gm .ro.r0{grid-row:3}
+ .gm .wxb{grid-column:2;grid-row:4;margin:0;padding:0;font-size:.62rem;line-height:20px}
+ .gm .rp{grid-column:2;margin:0}.gm .rp.r0{grid-row:5}.gm .rp.r1{grid-row:6}.gm .rp.r2{grid-row:7}
+ .gm .pb{grid-column:1;grid-row:5/7}
+ .gm .act{grid-column:1;grid-row:7;margin:0;flex-direction:column;align-items:stretch;gap:2px}
+ .gm .act #msg{font-size:.62rem;line-height:1.2}.gm .act .btn{padding:6px}
+ .gm .hand{grid-column:3;grid-row:1/8;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;overflow-y:auto;align-content:start;margin:0;padding:6px;border:0;border-radius:4px}
+ .gm .hand .card.lc{grid-column:1/-1;flex:none!important;width:100%!important;height:auto;aspect-ratio:auto;padding:4px 8px;font-size:.7rem}
+ .gm .hand .card.hc{width:100%;flex:none}
+ .gm .row{min-height:0;height:100%;padding:2px 6px;gap:6px;overflow:hidden}
+ .gm .row .rn{display:none}.gm .row .rs{width:26px;height:26px;font-size:.8rem}
+ .gm .cs{flex-wrap:nowrap;overflow:hidden;gap:3px}
+ .gm .bw{width:32px}
+ .gm .pc.bd .gban{display:none}.gm .pc.bd .gpw{transform:scale(1.45);transform-origin:top left}
+}
 </style></head><body><main>
 <button class="btn s" id="mu" style="position:absolute;top:10px;right:10px;z-index:5;padding:4px 10px" title="Son">🔊</button>
 <h1>Gwynt<small>Les Chroniques du Sorceleur</small></h1>
@@ -490,18 +520,18 @@ function ai(){if(S.over||S.lock||S.t!==1)return;
  const pick=op?o.find(x=>d+x.g>0):o[0];
  if(!pick)return pass(1);play(1,pick.i,pick.c.hn?bestHorn()[0]:undefined)}
 function rowH(p,r){const fx=S.wx[r];
- return `<div class="row${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<div class="bw${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop'+(S.fx.s?' smoke':''):''}">${pc(c,{cls:'bd',v:rv(p,r)[k]})}</div>`).join('')}<span style="display:none">${[].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}" data-z="${c.n}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
+ return `<div class="row ${p?'ro':'rp'} r${r}${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span><div class="cs">${S.b[p][r].map((c,k)=>`<div class="bw${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop'+(S.fx.s?' smoke':''):''}">${pc(c,{cls:'bd',v:rv(p,r)[k]})}</div>`).join('')}<span style="display:none">${[].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}" data-z="${c.n}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
 function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
 function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T1=tot(1),bp=[S.pt&&S.pt[0]!==T0?' bump':'',S.pt&&S.pt[1]!==T1?' bump':''];S.pt=[T0,T1];setTimeout(()=>{S.fx=S.wf=S.hf=S.dr=null},0);
  document.getElementById('app').innerHTML=
- `<div class="bar${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}</span><span class="tot${bp[1]}">${tot(1)}</span></div>${oppLd()}`+
+ `<div class="gm"><div class="bar ob${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span>${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n} (${FA[S.f[1]].n}) ${gems(1)} ${S.L[1].k==='none'?'':'· chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')'} · ${S.h[1].length} cartes${S.ps[1]?' · a passé':''}<small class="stk">pioche ${S.d[1].length} · cimetière ${S.gy[1].length}</small></span><span class="tot${bp[1]}">${tot(1)}</span></div>${oppLd()}`+
  [2,1,0].map(r=>rowH(1,r)).join('')+
- `<div class="wxb">${S.wx.some(v=>v)?'Météo : '+S.wx.map((v,i)=>v?['❄️ Gelée','🌫️ Brouillard','🌧️ Pluie'][i]+' ('+RN[i].toLowerCase()+')':'').filter(Boolean).join(' · '):'Terrain dégagé'}</div><div class="bar" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)} · ${S.h[0].length} carte${S.h[0].length>1?'s':''}${S.ps[0]?' · tu as passé':''}</span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
+ `<div class="wxb">${S.wx.some(v=>v)?'Météo : '+S.wx.map((v,i)=>v?['❄️ Gelée','🌫️ Brouillard','🌧️ Pluie'][i]+' ('+RN[i].toLowerCase()+')':'').filter(Boolean).join(' · '):'Terrain dégagé'}</div><div class="bar pb" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span>Manche ${Math.min(S.r,3)} · Toi (${FA[S.f[0]].n}) ${gems(0)} · ${S.h[0].length} carte${S.h[0].length>1?'s':''}${S.ps[0]?' · tu as passé':''}<small class="stk">pioche ${S.d[0].length} · cimetière ${S.gy[0].length}</small></span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
  [0,1,2].map(r=>rowH(0,r)).join('')+
  `<div class="hand">${ldCard()}${S.h[0].map((c,i)=>HB(c,i,me)).join('')}<span style="display:none">${[].map((c,i)=>c.hn?`<button class="card w${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}><b>♪</b><span>${c.n}</span><i>Double une rangée</i></button>`:c.w!==undefined
   ?`<button class="card w" data-i="${i}" ${me?'':'disabled'}><b>☁</b><span>${c.n}</span><i>${c.w<0?'Annule la météo':RN[c.w]+' à 1'}</i></button>`
   :`<button class="card${c.h?' h':''}" data-i="${i}" ${me?'':'disabled'}><b>${c.p}</b><span>${c.n}</span><i>${RN[c.r]}${c.h?' · héros':''}${c.a==='spy'?' · espion':c.a==='bond'?' · lien':''}</i></button>`).join('')}</div>`+
- `<div class="act"><button class="btn" id="pass" ${me?'':'disabled'}>${S.mul>0?'Garder la main':'Passer'}</button><span id="msg">${S.msg}</span>${S.nx?'<button class="btn" id="nx">Match suivant</button>':''}${S.over?'<button class="btn s" id="again">Menu principal</button>':''}</div>`;
+ `<div class="act"><button class="btn" id="pass" ${me?'':'disabled'}>${S.mul>0?'Garder la main':'Passer'}</button><span id="msg">${S.msg}</span>${S.nx?'<button class="btn" id="nx">Match suivant</button>':''}${S.over?'<button class="btn s" id="again">Menu principal</button>':''}</div></div>`;
  document.querySelectorAll('.card').forEach(b=>b.onclick=()=>{if(LP){LP=0;return}if(!me)return;const i=+b.dataset.i;
  if(S.mul>0)return swap(i);
  if(S.h[0][i].hn){S.sel=i;S.msg='Choisis la rangée du cor.';return render()}
