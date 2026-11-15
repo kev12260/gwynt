@@ -323,7 +323,7 @@ const rs=(p,r,wx=S.wx)=>rv(p,r,wx).reduce((s,v)=>s+v,0);
 const tot=(p,wx=S.wx)=>[0,1,2].reduce((s,r)=>s+rs(p,r,wx),0);
 function nwx(c){return c.w===-1?[0,0,0]:S.wx.map((v,i)=>i===c.w?1:v)}
 function play(p,i,row){const c=S.h[p].splice(i,1)[0];S.sel=null;snd(c.w!==undefined?'weather':c.hn?'horn':c.a==='spy'?'spy':c.h?'hero':'card');
- if(c.w!==undefined){S.wx=nwx(c);S.wf=c.w===-1?[0,1,2]:[c.w]}
+ if(c.w!==undefined){S.gy[p].push(c);S.wx=nwx(c);S.wf=c.w===-1?[0,1,2]:[c.w]}
  else if(c.hn){S.hn[p][row]=1;S.hf={p,r:row}}
  else{const tg=c.a==='spy'?1-p:p;S.b[tg][c.r].push(c);S.fx={p:tg,r:c.r,k:S.b[tg][c.r].length-1,s:c.a==='spy'?1:0};if(c.a==='spy'){const dd=S.d[p].splice(0,2);S.h[p].push(...dd);S.dr={p,n:dd.length}}}
  S.msg=(p?'L’adversaire joue : ':'Tu joues : ')+c.n+(c.hn?' ('+RN[row]+')':'')+(c.a==='spy'?' (espion, +2 cartes)':'')+'.';turn(p)}
