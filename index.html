@@ -509,10 +509,13 @@ function snd(t){if(SV.mute||!ac())return;amb();const sm=sample(t);if(sm)return p
  case 'booster':for(let i=0;i<6;i++)bell(B,880+i*210,T+i*.07,.7,.16,[1,2.01,3.02]);hit(B,T,.5,.15,'highpass',6000,.8);break;
  case 'coin':bell(B,1760,T,1.4,.3,[1,2.32,4.1]);hit(B,T,.03,.3,'highpass',4000);break;
  }}
-let TH=null,THOK=0,TX=0;
-function theme(){if(SV.mute){if(TH)TH.pause();return}if(TX)return;
- if(!TH){TH=new Audio('theme.mp3');TH.loop=true;TH.volume=.3;TH.addEventListener('playing',()=>THOK=1);TH.addEventListener('error',()=>{TH=null;THOK=0;TX=1})}
- if(TH&&TH.paused)TH.play().catch(()=>{})}
+let TH=null,THOK=0,TX=0,THS='pas encore lancée (touche l’écran)';
+function theme(f){if(SV.mute){if(TH)TH.pause();THS='coupée (bouton son)';return}
+ if(TX&&!f&&Date.now()-TX<30000)return;
+ if(!TH){TH=new Audio('theme.mp3');TH.loop=true;TH.volume=.3;TH.preload='auto';
+  TH.addEventListener('playing',()=>{THOK=1;THS='en lecture'});
+  TH.addEventListener('error',()=>{TH=null;THOK=0;TX=Date.now();THS='fichier theme.mp3 introuvable ou illisible'})}
+ if(TH&&TH.paused){const p=TH.play();if(p&&p.catch)p.catch(()=>{THS='bloquée par le navigateur : touche l’écran'})}}
 const slug=n=>n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const CFN={};{const k={};Object.keys(FA).forEach(f=>FA[f].c.forEach(c=>{(k[c.n]=k[c.n]||new Set()).add(f)}));Object.keys(k).forEach(n=>CFN[n]=k[n].size>1?'neu':[...k[n]][0])}
 const cfac=c=>c.f||CFN[c.n]||'neu',fcol=c=>FC[cfac(c)]||'#9aa3ab';
@@ -583,7 +586,7 @@ function rules(){const S2=[
 ['Progression et boosters','Une victoire donne 1 booster classique (2 la première fois contre un adversaire). Une défaite ne donne rien. Battre le chef d’une faction la débloque. Les tournois donnent une carte garantie et des boosters rares, un par jour. Les boosters spéciaux sont réservés aux événements.'],
 ['Ton deck','22 unités minimum, 10 cartes spéciales maximum, 45 cartes au maximum au total. Seules les cartes que tu possèdes peuvent y entrer. Exemplaires maximum par carte : communes 4, rares 3, épiques 2, légendaires et héros 1, météo et cor de commandement 4.'],
 ['Sauvegarde','Ta collection, tes boosters et tes decks sont enregistrés dans ce navigateur, sur cet appareil.']];
- $('app').innerHTML='<p>Règles du jeu — touche une section pour la lire.</p>'+S2.map((r,i)=>`<details class="rd"${i?'':' open'}><summary>${r[0]}</summary><div>${r[1]}</div></details>`).join('')+'<p><button class="btn s" id="bk">Retour</button> <button class="btn s" id="ri">Actualiser les images</button></p>';$('ri').onclick=()=>{try{localStorage.removeItem('gwynt-img')}catch(e){}location.reload()};$('bk').onclick=home}
+ $('app').innerHTML='<p>Règles du jeu — touche une section pour la lire.</p>'+S2.map((r,i)=>`<details class="rd"${i?'':' open'}><summary>${r[0]}</summary><div>${r[1]}</div></details>`).join('')+'<p style="color:var(--mut);font-size:.8rem">Musique : '+THS+'</p><p><button class="btn s" id="bk">Retour</button> <button class="btn s" id="ri">Actualiser les images</button> <button class="btn s" id="rm">Relancer la musique</button></p>';$('ri').onclick=()=>{try{localStorage.removeItem('gwynt-img')}catch(e){}location.reload()};$('rm').onclick=()=>{TX=0;theme(true);setTimeout(rules,1200)};$('bk').onclick=home}
 const oppLd=()=>S.L[1].k==='none'?'':`<div class="ocl${S.ld[1]?'':' used'}"><b>★ Chef adverse</b><span>${S.L[1].n}</span><i>${S.ld[1]?S.L[1].e:'utilisé'}</i></div>`;
 function wl(im){const x=['PNG','jpg','jpeg','JPG','JPEG','webp'],i=+(im.dataset.i||0);if(i<x.length){im.dataset.i=i+1;im.src=im.dataset.b+'.'+x[i]}else im.remove()}
 const IMG=(()=>{try{return JSON.parse(localStorage.getItem('gwynt-img')||'{}')}catch(e){return{}}})(),IMP={};
@@ -676,7 +679,7 @@ function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T
  document.querySelectorAll('.row.pick').forEach(e=>e.onclick=()=>me&&S.sel!=null&&play(0,S.sel,+e.dataset.r));
  const p=document.getElementById('pass');if(p)p.onclick=()=>{if(!me||S.mul>0)return;pass(0)};
  const a=document.getElementById('again');if(a)a.onclick=home;const nx=$('nx');if(nx)nx.onclick=()=>init(S.f[0],S.li,tOpp(S.o.tr,S.o.step+1));const ldb=document.getElementById('lead');if(ldb)ldb.onclick=()=>me&&S.ld[0]&&S.mul<=0&&lead(0)}
-const mu=$('mu'),mi=()=>mu.textContent=SV.mute?'🔇':'🔊';mi();mu.onclick=()=>{SV.mute=!SV.mute;save();mi();theme();snd('card')};addEventListener('pointerdown',theme);document.addEventListener('visibilitychange',()=>{if(TH)document.hidden?TH.pause():theme()});
+const mu=$('mu'),mi=()=>mu.textContent=SV.mute?'🔇':'🔊';mi();mu.onclick=()=>{SV.mute=!SV.mute;save();mi();theme();snd('card')};['pointerdown','touchend','click'].forEach(e=>addEventListener(e,()=>theme()));document.addEventListener('visibilitychange',()=>{if(TH)document.hidden?TH.pause():theme()});
 home();
 </script><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
 </body></html>
