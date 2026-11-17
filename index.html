@@ -378,8 +378,8 @@ const RAR=c=>c.rr!==undefined?c.rr:c.h?3:c.w!==undefined||c.hn||c.a==='spy'?2:c.
 const own=()=>CAT.filter(c=>SV.col[c.n]).length;
 const tileOld=(c,n,nw)=>`<div class="card tl rr${RAR(c)}"><b>${c.w!==undefined?'☁':c.hn?'♪':c.p}</b><span>${c.n}${n>1?' ×'+n:''}</span><i>${nw?'NOUVELLE · ':''}${RL[RAR(c)]}${c.r!==undefined?' · '+RN[c.r]:''}</i></div>`;
 function rollOld(){const r=Math.random()*100,k=r<5?3:r<15?2:r<40?1:0,P=pool(),p=P.filter(c=>RAR(c)===k);return(p.length?p:P)[Math.random()*(p.length||P.length)|0]}
-function home(){const n=own(),w=SV.wins||0;$('app').innerHTML=`<p>${n} / ${CAT.length} cartes (${Math.round(n*100/CAT.length)} %) · ${TB()} booster${TB()>1?'s':''} · ${w} victoire${w>1?'s':''}</p><button class="card fac" id="h1"><span><b>Jouer</b></span><i>Affronte des adversaires : une victoire = 1 booster, une défaite ne donne rien.</i></button><button class="card fac" id="h2"><span><b>Collection</b></span><i>L’album de toutes les cartes du jeu.</i></button><button class="card fac" id="h3" ${TB()?'':'disabled'}><span><b>Boosters (${TB()})</b></span><i>Classiques, rares et spéciaux : 3 cartes par paquet.</i></button><button class="card fac" id="h4"><span><b>Mes decks</b></span><i>Compose ton deck avec ta collection.</i></button><button class="card fac" id="h5"><span><b>Tournois</b></span><i>Enchaîne les adversaires pour gagner une carte garantie.</i></button><button class="card fac" id="h6"><span><b>Atelier de cartes</b></span><i>Crée tes propres cartes.</i></button><button class="card fac" id="h7"><span><b>Partie personnalisée</b></span><i>Joue avec tes cartes créées, sans récompense.</i></button><button class="card fac" id="h8"><span><b>Règles du jeu</b></span><i>Comment jouer, capacités, factions et progression.</i></button>`;
- $('h1').onclick=opps;$('h2').onclick=coll;$('h3').onclick=packs;$('h4').onclick=decks;$('h5').onclick=tourn;$('h6').onclick=gate;$('h7').onclick=cust;$('h8').onclick=rules}
+function home(){const n=own(),w=SV.wins||0;$('app').innerHTML=`<p>${n} / ${CAT.length} cartes (${Math.round(n*100/CAT.length)} %) · ${TB()} booster${TB()>1?'s':''} · ${w} victoire${w>1?'s':''}</p><button class="card fac" id="h1"><span><b>Jouer</b></span><i>Affronte des adversaires : une victoire = 1 booster, une défaite ne donne rien.</i></button><button class="card fac" id="h2"><span><b>Collection</b></span><i>L’album de toutes les cartes du jeu.</i></button><button class="card fac" id="h3" ${TB()?'':'disabled'}><span><b>Boosters (${TB()})</b></span><i>Classiques, rares et spéciaux : 3 cartes par paquet.</i></button><button class="card fac" id="h4"><span><b>Mes decks</b></span><i>Compose ton deck avec ta collection.</i></button><button class="card fac" id="h5"><span><b>Tournois</b></span><i>Enchaîne les adversaires pour gagner une carte garantie.</i></button><button class="card fac" id="h6"><span><b>Atelier de cartes</b></span><i>Crée tes propres cartes.</i></button><button class="card fac" id="h7"><span><b>Partie personnalisée</b></span><i>Joue avec tes cartes créées, sans récompense.</i></button><button class="card fac" id="h8"><span><b>Règles du jeu</b></span><i>Comment jouer, capacités, factions et progression.</i></button><button class="card fac" id="h9"><span><b>Sauvegarde</b></span><i>Exporter ou restaurer ta progression.</i></button>`;
+ $('h1').onclick=opps;$('h2').onclick=coll;$('h3').onclick=packs;$('h4').onclick=decks;$('h5').onclick=tourn;$('h6').onclick=gate;$('h7').onclick=cust;$('h8').onclick=rules;$('h9').onclick=bkp}
 function coll(){const L=CAT.slice().sort((a,b)=>RAR(b)-RAR(a)||a.n.localeCompare(b.n));
  $('app').innerHTML=`<p>Collection : ${own()} / ${CAT.length}</p><div class="grid">${L.map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):`<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>${RL[RAR(c)]}</i></div>`).join('')}</div>${CC().filter(c=>c.bo).length?'<p>Cartes spéciales :</p><div class="grid">'+CC().filter(c=>c.bo).map(c=>SV.col[c.n]?tile(c,SV.col[c.n]):'<div class="card tl" style="opacity:.3"><b>?</b><span>???</span><i>Spéciale</i></div>').join('')+'</div>':''}<button class="btn s" id="bk" style="margin-top:8px">Retour</button>`;$('bk').onclick=home}
 function openBOld(){if(SV.bp<1)return;SV.bp--;snd('booster');const g=[roll(),roll(),roll()].map((c,i)=>{const nw=!SV.col[c.n];SV.col[c.n]=(SV.col[c.n]||0)+1;return tile(c,0,nw,i*.35,1)});save();
@@ -597,6 +597,51 @@ const cap=c=>isSp(c)?4:[4,3,2,1][RAR(c)];
 function defDeck(f){const L=uc(f),d=Object.fromEntries(L.map(c=>[c.n,isSp(c)?Math.min(av(c),1):av(c)]));let t=Object.values(d).reduce((a,b)=>a+b,0);
  while(t>45){const o=L.filter(c=>d[c.n]>0).sort((a,b)=>RAR(a)-RAR(b)||d[b.n]-d[a.n]);if(!o.length)break;d[o[0].n]--;t--}return d}
 const LINK='<svg viewBox="0 0 24 24" fill="none" stroke="#d9a441" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>';
+function morph(a,b){const ac=a.childNodes,bc=[...b.childNodes];
+ for(let i=0;i<bc.length;i++){const n=bc[i],o=ac[i];
+  if(!o){a.appendChild(n);continue}
+  if(o.nodeType!==n.nodeType||o.nodeName!==n.nodeName){a.replaceChild(n,o);continue}
+  if(n.nodeType===3){if(o.nodeValue!==n.nodeValue)o.nodeValue=n.nodeValue;continue}
+  if(n.nodeType!==1)continue;
+  for(const at of [...o.attributes])if(!n.hasAttribute(at.name))o.removeAttribute(at.name);
+  for(const at of [...n.attributes])if(o.getAttribute(at.name)!==at.value)o.setAttribute(at.name,at.value);
+  o.onclick=null;o.onchange=null;morph(o,n)}
+ while(a.childNodes.length>bc.length)a.removeChild(a.lastChild)}
+function paint(html){const app=document.getElementById('app'),f=app.firstElementChild;
+ if(!f||!f.classList.contains('gm')){app.innerHTML=html;return}
+ try{const t=document.createElement('template');t.innerHTML=html;morph(app,t.content)}catch(e){app.innerHTML=html}}
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+const BK=['col','bp','bx','wins','ul','beat','dk','cc','td','st','mute'];
+async function bkEnc(){const o={};BK.forEach(k=>{if(SV[k]!==undefined)o[k]=SV[k]});const j=JSON.stringify({v:1,t:Date.now(),d:o});let r='';new TextEncoder().encode(j).forEach(c=>r+=String.fromCharCode(c));
+ return 'GWYNT1.'+(await sha(j)).slice(0,10)+'.'+btoa(r)}
+async function bkDec(code){const p=String(code||'').trim().split('.');if(p[0]!=='GWYNT1'||p.length!==3)throw new Error('format');
+ let j;try{j=new TextDecoder().decode(Uint8Array.from(atob(p[2]),c=>c.charCodeAt(0)))}catch(e){throw new Error('contrôle')}
+ if((await sha(j)).slice(0,10)!==p[1])throw new Error('contrôle');return JSON.parse(j)}
+function bkClean(d){const okn=n=>typeof n==='string'&&/^[^<>&"]{1,24}$/.test(n),num=(v,m)=>Math.max(0,Math.min(m,Math.floor(+v)||0)),o={};
+ o.col={};for(const k in (d.col||{}))if(okn(k))o.col[k]=num(d.col[k],99);
+ o.bp=num(d.bp,999);o.bx={r:num(d.bx&&d.bx.r,999),s:num(d.bx&&d.bx.s,999)};o.wins=num(d.wins,99999);
+ o.ul={nr:1};for(const k in (d.ul||{}))if(FA[k]&&d.ul[k])o.ul[k]=1;
+ o.beat={};for(const k in (d.beat||{}))if(/^[a-z_]{1,12}$/.test(k)&&d.beat[k])o.beat[k]=1;
+ o.dk={};for(const f in (d.dk||{}))if(FA[f]&&d.dk[f]&&typeof d.dk[f]==='object'){o.dk[f]={};for(const k in d.dk[f])if(okn(k))o.dk[f][k]=num(d.dk[f][k],9)}
+ o.cc=(Array.isArray(d.cc)?d.cc:[]).slice(0,200).filter(c=>c&&okn(c.n)&&c.p>=1&&c.p<=15&&c.r>=0&&c.r<=2).map(c=>({n:c.n,p:+c.p,r:+c.r,h:!!c.h,a:c.a==='spy'||c.a==='bond'?c.a:undefined,bg:okn(c.bg)?c.bg:undefined,f:FA[c.f]?c.f:'neu',cu:1,ty:['base','ev','no'].includes(c.ty)?c.ty:'no',bo:c.ty==='ev'?1:0,rr:[0,1,2,3].includes(c.rr)?c.rr:undefined}));
+ o.td={};for(const k in (d.td||{}))if(/^[a-z]{1,8}$/.test(k)&&/^\d{4}-\d{2}-\d{2}$/.test(d.td[k]))o.td[k]=d.td[k];
+ o.st=1;o.mute=d.mute?1:0;return o}
+function bkp(){const last=SV.lastExp?new Date(SV.lastExp).toLocaleDateString('fr-FR'):'jamais';
+ $('app').innerHTML=`<p>Sauvegarde de ta progression · dernier export : <b>${last}</b></p><p style="text-align:left;font-size:.85rem;line-height:1.45">Ta collection, tes boosters, tes decks et tes cartes créées sont enregistrés dans ce navigateur. Exporte-les de temps en temps : tu pourras tout retrouver après un effacement des données, ou sur un autre appareil. Utilise de préférence le jeu installé sur l’écran d’accueil, mieux protégé contre les effacements automatiques.</p><div class="fm"><button class="btn" id="bx">Exporter ma sauvegarde</button></div><textarea id="bt" rows="4" placeholder="Le code de sauvegarde apparaît ici. Pour restaurer, colle un code ici." style="width:100%;margin-top:8px;background:#141b22;color:var(--ag);border:1px solid var(--line);border-radius:3px;font-size:.7rem"></textarea><div class="fm" style="margin-top:6px"><button class="btn s" id="bc">Copier</button> <button class="btn s" id="bd">Télécharger</button> <button class="btn s" id="bi">Restaurer ce code</button> <button class="btn s" id="bq">Choisir un fichier</button><input type="file" id="bf" accept=".txt,.json" style="display:none"></div><p id="bm" style="color:var(--or);min-height:1.3em"></p><p><button class="btn s" id="bk">Retour</button></p>`;
+ const T=$('bt'),M=t=>{$('bm').textContent=t};let pend=null;
+ $('bx').onclick=async()=>{try{T.value=await bkEnc();SV.lastExp=Date.now();save();T.select();M('Code créé : copie-le ou télécharge-le, puis garde-le en lieu sûr.')}catch(e){M('Navigateur non compatible.')}};
+ $('bc').onclick=async()=>{if(!T.value)return M('Exporte d’abord ta sauvegarde.');try{await navigator.clipboard.writeText(T.value);M('Copié.')}catch(e){T.select();try{document.execCommand('copy');M('Copié.')}catch(x){M('Sélectionne le texte et copie-le à la main.')}}};
+ $('bd').onclick=async()=>{if(!T.value){try{T.value=await bkEnc();SV.lastExp=Date.now();save()}catch(e){return M('Navigateur non compatible.')}}
+  const u=URL.createObjectURL(new Blob([T.value],{type:'text/plain'})),a=document.createElement('a');a.href=u;a.download='gwynt-sauvegarde.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);M('Fichier prêt.')};
+ $('bq').onclick=()=>$('bf').click();
+ $('bf').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{T.value=String(r.result).trim();pend=null;M('Fichier chargé : appuie sur « Restaurer ce code ».')};r.readAsText(f)};
+ $('bi').onclick=async()=>{try{const d=await bkDec(T.value),c=bkClean(d.d||{});
+  if(!pend||pend.code!==T.value){pend={code:T.value,c};const n=Object.keys(c.col).filter(k=>c.col[k]>0).length;M('Cette sauvegarde contient '+n+' cartes différentes, '+c.wins+' victoires et '+c.bp+' boosters classiques. Appuie encore sur « Restaurer ce code » pour remplacer ta progression actuelle.');return}
+  try{localStorage.setItem('gwynt-sv-avant',JSON.stringify(SV))}catch(e){}
+  Object.keys(SV).forEach(k=>delete SV[k]);Object.assign(SV,pend.c);SV.lastExp=Date.now();syncCat();save();pend=null;M('Progression restaurée.');setTimeout(home,900)
+ }catch(e){M(e.message==='format'?'Ce code n’est pas une sauvegarde Gwynt.':e.message==='contrôle'?'Code abîmé ou incomplet : vérifie qu’il est complet.':'Code illisible.')}};
+ $('bk').onclick=home}
 function bestHorn(){let b=0,br=0;[0,1,2].forEach(r=>{if(S.hn[1][r])return;const s=S.b[1][r].filter(c=>!c.h).reduce((a,c)=>a+c.p,0);if(s>b){b=s;br=r}});return[br,b]}
 function gain(c,d){if(c.w!==undefined){const w=nwx(c);return tot(1,w)-tot(0,w)-d}
  if(c.hn)return bestHorn()[1];if(c.a==='spy')return 2;return c.a==='bond'?c.p*2:S.wx[c.r]&&!c.h?1:c.p}
@@ -615,7 +660,7 @@ function rowH(p,r){const fx=S.wx[r];
  return `<div class="row ${p?'ro':'rp'} r${r}${fx?' fx':''}${p===0&&S.sel!=null?' pick':''}${S.wf&&S.wf.includes(r)?' wfx':''}${S.hf&&S.hf.p===p&&S.hf.r===r?' hfx':''}" data-fx="${fx?WN[r]:''}" data-r="${p===0?r:''}"><span class="rs">${rs(p,r)}</span><span class="rn">${RN[r]}${S.hn[p][r]?' ♪':''}</span>${S.hn[p][r]?'<span class="hnb">♪×2</span>':''}<div class="cs">${S.b[p][r].map((c,k)=>`<div class="bw${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop'+(S.fx.s?' smoke':''):''}">${pc(c,{cls:'bd',v:rv(p,r)[k]})}</div>`).join('')}<span style="display:none">${[].map((c,k)=>`<span class="chip${c.h?' h':''}${S.fx&&S.fx.p===p&&S.fx.r===r&&S.fx.k===k?' pop':''}" data-z="${c.n}"><b class="${fx&&!c.h?'dn':''}">${rv(p,r)[k]}</b>${c.n}</span>`).join('')}</div></div>`}
 function gems(p){return `<span class="gem">${[0,1].map(i=>`<span class="${i<S.g[p]?'':'off'}">◆</span>`).join('')}</span>`}
 function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T1=tot(1),bp=[S.pt&&S.pt[0]!==T0?' bump':'',S.pt&&S.pt[1]!==T1?' bump':''];S.pt=[T0,T1];setTimeout(()=>{S.fx=S.wf=S.hf=S.dr=null},0);
- document.getElementById('app').innerHTML=
+ paint(
  `<div class="gm"><div class="bar ob${S.t===1&&!S.over&&!S.lock?' think':''}" style="border-left:6px solid ${FC[S.f[1]]}"><span class="bi"><b class="bn">${S.o.tr?S.o.tr.n+' '+(S.o.step+1)+'/'+S.o.tr.o.length+' · ':''}${S.o.n}</b><span class="bf">(${FA[S.f[1]].n})</span><span class="bg">${gems(1)}</span>${S.L[1].k==='none'?'':'<span class="bl">chef '+S.L[1].n+' ('+(S.ld[1]?'disponible':'utilisé')+')</span>'}<span class="bc">${S.h[1].length} cartes</span><span class="bs">${S.ps[1]?'a passé':''}</span><small class="stk">pioche ${S.d[1].length} · cimetière ${S.gy[1].length}</small></small></span><span class="tot${bp[1]}">${tot(1)}</span></div>${oppLd()}`+
  [2,1,0].map(r=>rowH(1,r)).join('')+
  `<div class="wxb">${S.wx.some(v=>v)?'Météo : '+S.wx.map((v,i)=>v?['❄️ Gelée','🌫️ Brouillard','🌧️ Pluie'][i]+' ('+RN[i].toLowerCase()+')':'').filter(Boolean).join(' · '):'Terrain dégagé'}<span class="wm">${S.msg}</span></div><div class="bar pb" style="margin-top:6px;border-left:6px solid ${FC[S.f[0]]}"><span class="bi"><span class="br">Manche ${Math.min(S.r,3)}</span><b class="bn">Toi</b><span class="bf">(${FA[S.f[0]].n})</span><span class="bg">${gems(0)}</span><span class="bc">${S.h[0].length} carte${S.h[0].length>1?'s':''}</span><span class="bs">${S.ps[0]?'tu as passé':''}</span><small class="stk">pioche ${S.d[0].length} · cimetière ${S.gy[0].length}</small></small></span><span class="tot${bp[0]}">${tot(0)}</span></div>`+
@@ -623,7 +668,7 @@ function render(){const me=S.t===0&&!S.over&&!S.lock&&!S.ps[0];const T0=tot(0),T
  `<div class="hand">${ldCard()}${S.h[0].map((c,i)=>HB(c,i,me)).join('')}<span style="display:none">${[].map((c,i)=>c.hn?`<button class="card w${S.sel===i?' on':''}" data-i="${i}" ${me?'':'disabled'}><b>♪</b><span>${c.n}</span><i>Double une rangée</i></button>`:c.w!==undefined
   ?`<button class="card w" data-i="${i}" ${me?'':'disabled'}><b>☁</b><span>${c.n}</span><i>${c.w<0?'Annule la météo':RN[c.w]+' à 1'}</i></button>`
   :`<button class="card${c.h?' h':''}" data-i="${i}" ${me?'':'disabled'}><b>${c.p}</b><span>${c.n}</span><i>${RN[c.r]}${c.h?' · héros':''}${c.a==='spy'?' · espion':c.a==='bond'?' · lien':''}</i></button>`).join('')}</div>`+
- `<div class="act"><button class="btn" id="pass" ${me&&S.mul<=0?'':'disabled'}>Passer</button><span id="msg">${S.msg}</span>${S.nx?'<button class="btn" id="nx">Match suivant</button>':''}${S.over?'<button class="btn s" id="again">Menu principal</button>':''}</div></div>`;
+ `<div class="act"><button class="btn" id="pass" ${me&&S.mul<=0?'':'disabled'}>Passer</button><span id="msg">${S.msg}</span>${S.nx?'<button class="btn" id="nx">Match suivant</button>':''}${S.over?'<button class="btn s" id="again">Menu principal</button>':''}</div></div>`);
  document.querySelectorAll('.card').forEach(b=>b.onclick=()=>{if(LP){LP=0;return}if(!me)return;const i=+b.dataset.i;
  if(S.mul>0)return;
  if(S.h[0][i].hn){S.sel=i;S.msg='Choisis la rangée du cor.';return render()}
